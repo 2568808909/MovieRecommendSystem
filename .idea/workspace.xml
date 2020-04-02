@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6681a7b1-bab4-48f2-be92-f2404eda107d" name="Default Changelist" comment="" />
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/RegisterCenter/target/" />
+    <ignored path="$PROJECT_DIR$/UserManagerSystem/target/" />
+    <ignored path="$PROJECT_DIR$/Common/target/" />
+    <ignored path="$PROJECT_DIR$/MoiveManagementSystem/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="78">
+              <caret line="21" column="64" lean-forward="true" selection-start-line="21" selection-start-column="64" selection-end-line="21" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/MovieManagementMain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="161">
+              <caret line="8" column="63" selection-start-line="8" selection-start-column="63" selection-end-line="8" selection-end-column="63" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/controller/MovieController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="621">
+              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#356#357#0" expanded="true" />
+                <element signature="e#382#383#0" expanded="true" />
+                <element signature="e#533#534#0" expanded="true" />
+                <element signature="e#559#560#0" expanded="true" />
+                <element signature="e#616#617#0" expanded="true" />
+                <element signature="e#642#643#0" expanded="true" />
+                <element signature="e#706#707#0" expanded="true" />
+                <element signature="e#727#728#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/MovieService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/impl/MovieServiceImpl.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="207">
+              <caret line="9" column="62" lean-forward="true" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+              <folding>
+                <element signature="e#973#974#0" expanded="true" />
+                <element signature="e#1051#1052#0" expanded="true" />
+                <element signature="e#1132#1133#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/movie/Rating.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="11" column="27" lean-forward="true" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/mapper/MovieMapper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="115">
+              <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RegisterCenter/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="17" column="21" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>actu</find>
+      <find>redis</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/RegisterCenter/pom.xml" />
+        <option value="$PROJECT_DIR$/RegisterCenter/src/main/java/com/ccb/movie/EurekaRegister.java" />
+        <option value="$PROJECT_DIR$/RegisterCenter/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/RegisterCenter/src/main/java/com/ccb/movie/EurekaRegisterCenter.java" />
+        <option value="$PROJECT_DIR$/Common/pom.xml" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/HttpResult.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/util/ReflectUtil.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/anno/Convert.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/HttpResult.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/service/UserService.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/user/User.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/pom.xml" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/mapper/UserMapper.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/UserManagementMain.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/UserManagementMain.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/config/MapperConfig.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/service/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/param/UserRegisterParam.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/service/impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/MovieManagementMain.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/config/MapperConfig.java" />
+        <option value="$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/config/MapperConfig.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/MovieServiceImple.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/pom.xml" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/controller/MovieController.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/common/PageInfo.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/mapper/MovieMapper.java" />
+        <option value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/movie/Rating.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/MovieService.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/mapper/RatingMapper.java" />
+        <option value="$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/impl/MovieServiceImpl.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="D:/apache-maven-3.5.4" />
+        <option name="userSettingsFile" value="D:\apache-maven-3.5.4\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="MovieRecommendSystem" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="MovieRecommendSystem" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-38" />
+    <option name="y" value="74" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="movie" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="movie" type="462c0819:PsiDirectoryNode" />
+              <item name="bean" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="Common" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="movie" type="462c0819:PsiDirectoryNode" />
+              <item name="bean" type="462c0819:PsiDirectoryNode" />
+              <item name="movie" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="MoiveManagementSystem" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="MoiveManagementSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="MoiveManagementSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="MoiveManagementSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="MoiveManagementSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="movie" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MovieRecommendSystem" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MovieRecommendSystem" type="462c0819:PsiDirectoryNode" />
+              <item name="UserManagerSystem" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Common/src/main/java/com/ccb/movie" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.ccb.movie.config" />
+      <recent name="com.ccb.movie.anno" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\project\MovieRecommendSystem\Common\src\main\java\com\ccb\movie" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.UserManagementMain">
+    <configuration name="EurekaRegisterCenter" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="RegisterCenter" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.ccb.movie.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ccb.movie.EurekaRegisterCenter" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MovieManagementMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="MoiveManagementSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ccb.movie.MovieManagementMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagementMain (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="UserManagerSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ccb.movie.UserManagementMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagementMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="UserManagerSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ccb.movie.user.UserManagementMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserManagementMain" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="UserManagerSystem" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ccb.movie.UserManagementMain" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.UserManagementMain" />
+      <item itemvalue="Spring Boot.MovieManagementMain" />
+      <item itemvalue="Spring Boot.EurekaRegisterCenter" />
+      <item itemvalue="Spring Boot.UserManagementMain (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.EurekaRegisterCenter" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6681a7b1-bab4-48f2-be92-f2404eda107d" name="Default Changelist" comment="" />
+      <created>1585790264543</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585790264543</updated>
+      <workItem from="1585790272782" duration="7395000" />
+      <workItem from="1585797752387" duration="2401000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="9796000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="simpleUML" order="7" />
+      <window_info id="Web" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32900432" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32900432" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" />
+      <window_info anchor="bottom" id="Database Changes" order="13" />
+      <window_info anchor="bottom" id="Version Control" order="14" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" visible="true" weight="0.28731343" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Bean Validation" order="9" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/RegisterCenter/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="34" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RegisterCenter/src/main/java/com/ccb/movie/EurekaRegisterCenter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="44" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#255#256#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-dependencies/2.2.2.RELEASE/spring-boot-dependencies-2.2.2.RELEASE.pom">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="308" column="6" selection-start-line="308" selection-start-column="6" selection-end-line="308" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/HttpResult.java" />
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/exception/BizException.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/anno/Convert.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_202/src.zip!/java/lang/annotation/Retention.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_202/src.zip!/java/lang/annotation/Target.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="78" column="18" selection-start-line="78" selection-start-column="18" selection-end-line="78" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/util/ReflectUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="24" column="71" selection-start-line="24" selection-start-column="71" selection-end-line="24" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" column="34" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/mapper/UserMapper.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/UserManagementMain.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/config/MapperConfig.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/controller/UserController.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/service/impl/UserServiceImpl.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/user/service/UserService.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/param/UserRegisterParam.java" />
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="9" column="15" selection-start-line="9" selection-start-column="15" selection-end-line="9" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/mapper/UserMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="5" column="50" selection-start-line="5" selection-start-column="50" selection-end-line="5" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="24" column="29" selection-start-line="24" selection-start-column="29" selection-end-line="24" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/UserManagementMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/util/CommonUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/user/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/service/impl/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/service/impl/MovieServiceImple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UserManagerSystem/src/main/java/com/ccb/movie/config/MapperConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RegisterCenter/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="17" column="21" selection-start-line="17" selection-start-column="21" selection-end-line="17" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="21" column="64" lean-forward="true" selection-start-line="21" selection-start-column="64" selection-end-line="21" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/MovieManagementMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="8" column="63" selection-start-line="8" selection-start-column="63" selection-end-line="8" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/config/MapperConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/common/HttpResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/common/PageInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/controller/MovieController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="621">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#356#357#0" expanded="true" />
+            <element signature="e#382#383#0" expanded="true" />
+            <element signature="e#533#534#0" expanded="true" />
+            <element signature="e#559#560#0" expanded="true" />
+            <element signature="e#616#617#0" expanded="true" />
+            <element signature="e#642#643#0" expanded="true" />
+            <element signature="e#706#707#0" expanded="true" />
+            <element signature="e#727#728#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/mapper/MovieMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/movie/Rating.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="11" column="27" lean-forward="true" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Common/src/main/java/com/ccb/movie/bean/movie/Movie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/mapper/RatingMapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/MovieService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MoiveManagementSystem/src/main/java/com/ccb/movie/service/impl/MovieServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="9" column="62" lean-forward="true" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+          <folding>
+            <element signature="e#973#974#0" expanded="true" />
+            <element signature="e#1051#1052#0" expanded="true" />
+            <element signature="e#1132#1133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>scala-sdk-2.11.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
