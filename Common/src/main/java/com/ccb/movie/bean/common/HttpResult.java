@@ -2,6 +2,7 @@ package com.ccb.movie.bean.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Data
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class HttpResult implements Serializable {
 
     public transient final static int SUCCESS_CODE = 0;

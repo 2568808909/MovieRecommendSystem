@@ -8,4 +8,6 @@ public interface UserService {
     HttpResult register(User user);
 
     HttpResult login(String username, String password);
+
+    HttpResult getUserById(Long id);
 }

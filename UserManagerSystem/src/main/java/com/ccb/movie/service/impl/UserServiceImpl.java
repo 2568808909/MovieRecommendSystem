@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -42,6 +43,13 @@ public class UserServiceImpl implements UserService {
     public HttpResult login(String username, String password) {
         password = CommonUtil.MD5(password);
         return loginWithMD5(username, password);
+    }
+
+    @Override
+    public HttpResult getUserById(Long id) {
+        return Optional.ofNullable(userMapper.selectByPrimaryKey(id))
+                .map(HttpResult::success)
+                .orElse(HttpResult.fail("用户不存在"));
     }
 
     private HttpResult loginWithMD5(String username, String password) {

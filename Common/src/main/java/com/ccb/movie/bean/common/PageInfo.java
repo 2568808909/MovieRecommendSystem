@@ -6,10 +6,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class PageInfo {
-
-    private Object data;
-
-    private Integer totalCount;
+    private long totalCount;
 
     private Integer pageSize;
 
