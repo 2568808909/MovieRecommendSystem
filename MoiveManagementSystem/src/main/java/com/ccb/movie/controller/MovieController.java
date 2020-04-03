@@ -6,6 +6,7 @@ import com.ccb.movie.bean.movie.Rating;
 import com.ccb.movie.bean.movie.vo.MovieAddParam;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
+import com.ccb.movie.bean.movie.vo.RatingParam;
 import com.ccb.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -21,7 +22,11 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping("/mark")
-    public HttpResult mark(@RequestBody Rating rating) {
+    public HttpResult mark(@Validated @RequestBody RatingParam param) {
+        Rating rating=new Rating();
+        rating.setUserId(param.getUserId());
+        rating.setMovieId(param.getMovieId());
+        rating.setRating(param.getRating());
         movieService.mark(rating);
         return HttpResult.success();
     }

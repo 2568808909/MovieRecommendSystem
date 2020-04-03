@@ -8,9 +8,10 @@ import javax.validation.constraints.NotNull;
 @Data
 @ToString
 public class MovieAddParam {
-    @NotNull
+
+    @NotNull(message = "请输入电影标题")
     private String name;
 
-    @NotNull
+    @NotNull(message = "请输入电影封面url")
     private String coverUrl;
 }

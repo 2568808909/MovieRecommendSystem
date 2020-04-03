@@ -40,6 +40,9 @@ public class MovieServiceImpl implements MovieService {
             if (userService.getUserById(rating.getUserId()).getData() == null) {
                 throw new BizException("用户不存在: " + rating.getUserId());
             }
+            Date now = new Date();
+            rating.setCreatedTime(now);
+            rating.setUpdatedTime(now);
             ratingMapper.insert(rating);
         } catch (DuplicateKeyException e) {
             throw new BizException("您已经对该电影评过分了哦，不能多次评分哦！");
