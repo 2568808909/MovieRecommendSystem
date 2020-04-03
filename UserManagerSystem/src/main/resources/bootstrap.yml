@@ -1,0 +1,20 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: movie-user-service
+  cloud:
+    config:
+      label: master  #分支名称
+      name: config   #配置文件名称
+      profile: dev   #后缀名称--环境
+      uri: http://localhost:3344  #配置中心地址  上述配置拼起来就是 http://localhost:3344/master/config-dev.yml
+ribbon:
+  eureka:
+    enabled: false
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7003:7003/eureka

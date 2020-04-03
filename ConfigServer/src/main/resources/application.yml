@@ -1,0 +1,21 @@
+server:
+  port: 3344
+spring:
+  application:
+    name: cloud-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/2568808909/movie-config  #配置git地址 之后可以通过 http://localhost:3344/master/config-dev.yml进行配置的获取
+  kafka:
+    bootstrap-servers: localhost:9092
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7003/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'

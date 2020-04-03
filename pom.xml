@@ -13,6 +13,8 @@
         <module>RegisterCenter</module>
         <module>Common</module>
         <module>MoiveManagementSystem</module>
+        <module>MovieSystem</module>
+        <module>ConfigServer</module>
     </modules>
 
     <!--统一管理jar版本-->
