@@ -27,13 +27,4 @@ public class MovieController {
         return movieService.moviePage(param);
     }
 
-    @PostMapping("/add")
-    public HttpResult addMovie(@Validated @RequestBody MovieAddParam param) {
-        return movieService.addMovie(param);
-    }
-
-    @PutMapping("/update")
-    public HttpResult updateMovieInfo(@Validated @RequestBody MovieUpdateParam param) {
-        return movieService.updateMovieInfo(param);
-    }
 }

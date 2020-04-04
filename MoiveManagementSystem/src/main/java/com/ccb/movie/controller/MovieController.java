@@ -1,5 +1,6 @@
 package com.ccb.movie.controller;
 
+import com.ccb.movie.annation.AdminOps;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.movie.Movie;
 import com.ccb.movie.bean.movie.Rating;
@@ -41,6 +42,7 @@ public class MovieController {
     }
 
     @PostMapping("/add")
+    @AdminOps
     public HttpResult addMovie(@RequestBody MovieAddParam param) {
         Movie movie = new Movie();
         movie.setCoverUrl(param.getCoverUrl());
@@ -50,6 +52,7 @@ public class MovieController {
     }
 
     @PutMapping("/update")
+    @AdminOps
     public HttpResult updateMovieInfo(@Validated @RequestBody MovieUpdateParam param) {
         String name = param.getName();
         String coverUrl = param.getCoverUrl();

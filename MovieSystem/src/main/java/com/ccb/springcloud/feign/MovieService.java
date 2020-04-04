@@ -19,9 +19,4 @@ public interface MovieService {
     @GetMapping("/page")
     HttpResult moviePage(MovieSearchParam param);
 
-    @PostMapping("/add")
-    HttpResult addMovie(MovieAddParam param);
-
-    @PutMapping("/update")
-    HttpResult updateMovieInfo(MovieUpdateParam param);
 }

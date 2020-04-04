@@ -42,6 +42,10 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.ccb.movie</groupId>
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>

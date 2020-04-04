@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -20,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    private final static String TICKET="ticket";
 
     @PostMapping("/register")
     public HttpResult register(@Validated @RequestBody UserRegisterParam param) {
@@ -30,7 +33,7 @@ public class UserController {
     public HttpResult login(@Validated @RequestBody UserLoginParam param, HttpServletResponse response) {
         HttpResult loginInfo = userService.login(param);
         if (loginInfo.getCode() == HttpResult.SUCCESS_CODE) {
-            Cookie cookie = new Cookie("ticket", (String) loginInfo.getData());
+            Cookie cookie = new Cookie(TICKET, (String) loginInfo.getData());
             response.addCookie(cookie);
         }
         return loginInfo;
@@ -50,7 +53,19 @@ public class UserController {
     }
 
     @PutMapping("/logout")
-    HttpResult logout(@Validated @RequestBody LogoutParam param) {
+    public HttpResult logout(@Validated @RequestBody LogoutParam param,
+                      HttpServletResponse response,
+                      HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (TICKET.equals(cookie.getName())) {
+                Cookie c = new Cookie(cookie.getName(), null);
+                c.setMaxAge(0);
+                c.setPath("/");
+                response.addCookie(c);
+                break;
+            }
+        }
         return userService.logout(param);
     }
 }

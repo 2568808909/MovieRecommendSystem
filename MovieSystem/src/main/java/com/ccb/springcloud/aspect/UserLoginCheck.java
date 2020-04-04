@@ -1,4 +1,4 @@
-package com.ccb.movie.aspect;
+package com.ccb.springcloud.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 
