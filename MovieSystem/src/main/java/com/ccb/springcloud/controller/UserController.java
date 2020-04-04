@@ -6,6 +6,7 @@ import com.ccb.movie.bean.user.vo.UserChangePasswordParam;
 import com.ccb.movie.bean.user.vo.UserLoginParam;
 import com.ccb.movie.bean.user.vo.UserRegisterParam;
 import com.ccb.movie.exception.BizException;
+import com.ccb.springcloud.annotation.UserOps;
 import com.ccb.springcloud.feign.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +23,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private final static String TICKET="ticket";
+    public final static String TICKET="ticket";
 
     @PostMapping("/register")
     public HttpResult register(@Validated @RequestBody UserRegisterParam param) {
@@ -53,6 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/logout")
+    @UserOps
     public HttpResult logout(@Validated @RequestBody LogoutParam param,
                       HttpServletResponse response,
                       HttpServletRequest request) {

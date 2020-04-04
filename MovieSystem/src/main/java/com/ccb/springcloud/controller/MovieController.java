@@ -5,6 +5,7 @@ import com.ccb.movie.bean.movie.vo.MovieAddParam;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
+import com.ccb.springcloud.annotation.UserOps;
 import com.ccb.springcloud.feign.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,7 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping("/mark")
+    @UserOps
     public HttpResult mark(RatingParam param) {
         return movieService.mark(param);
     }
