@@ -57,13 +57,15 @@ public class UserController {
                       HttpServletResponse response,
                       HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (TICKET.equals(cookie.getName())) {
-                Cookie c = new Cookie(cookie.getName(), null);
-                c.setMaxAge(0);
-                c.setPath("/");
-                response.addCookie(c);
-                break;
+        if(cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if (TICKET.equals(cookie.getName())) {
+                    Cookie c = new Cookie(cookie.getName(), null);
+                    c.setMaxAge(0);
+                    c.setPath("/");
+                    response.addCookie(c);
+                    break;
+                }
             }
         }
         return userService.logout(param);

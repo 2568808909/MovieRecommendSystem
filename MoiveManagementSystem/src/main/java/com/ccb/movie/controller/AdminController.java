@@ -5,21 +5,21 @@ import com.ccb.movie.exception.BizException;
 import com.ccb.movie.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController("/admin")
+@RestController
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
     private AdminService adminService;
 
-    private final static String TICKET = "adminTicket";
+    public final static String TICKET = "adminTicket";
 
     @PostMapping("/login")
     public HttpResult login(String admin, String password, HttpServletResponse response) {
@@ -29,6 +29,8 @@ public class AdminController {
         HttpResult loginInfo = adminService.login(admin, password);
         if (loginInfo.getCode() == HttpResult.SUCCESS_CODE) {
             Cookie cookie = new Cookie(TICKET, (String) loginInfo.getData());
+            cookie.setPath("/");
+            cookie.setMaxAge(86400);
             response.addCookie(cookie);
         }
         return loginInfo;
@@ -37,15 +39,22 @@ public class AdminController {
     @PutMapping("/logout")
     public HttpResult logout(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (TICKET.equals(cookie.getName())) {
-                Cookie c = new Cookie(cookie.getName(), null);
-                c.setMaxAge(0);
-                c.setPath("/");
-                response.addCookie(c);
-                break;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (TICKET.equals(cookie.getName())) {
+                    Cookie c = new Cookie(cookie.getName(), null);
+                    c.setMaxAge(0);
+                    c.setPath("/");
+                    response.addCookie(c);
+                    return adminService.logout(cookie.getValue());
+                }
             }
         }
-        return adminService.logout(toString());
+        return HttpResult.success();
+    }
+
+    @GetMapping("/login")
+    public ModelAndView loginPage() {
+        return new ModelAndView("/admin/login");
     }
 }

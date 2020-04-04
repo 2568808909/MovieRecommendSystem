@@ -28,3 +28,7 @@ logging:
   level:
     #这个接口的调用日志以debug级别进行打印
     com.ccb.movie.feign.UserService: debug
+movie:
+  admin:
+    name: admin
+    password: ISMvKXpXpadDiUoOSoAfww==   #admin
