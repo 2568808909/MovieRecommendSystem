@@ -20,7 +20,7 @@ public class MovieController {
 
     @PostMapping("/mark")
     @UserOps
-    public HttpResult mark(RatingParam param) {
+    public HttpResult mark(@RequestBody @Validated RatingParam param) {
         return movieService.mark(param);
     }
 

@@ -16,5 +16,5 @@ public interface UserService {
 
     HttpResult logout(String token, String username);
 
-    boolean isLogin(String token);
+    Boolean isLogin(String token);
 }

@@ -18,7 +18,13 @@ eureka:
     service-url:
       defaultZone: http://eureka7003:7003/eureka
 feign:
+  httpclient:
+    enabled: true
   compression:
     request:
       enabled: true
       mime-types: application/json            #使用feign发请求时以json形式发送
+logging:
+  level:
+    #这个接口的调用日志以debug级别进行打印
+    com.ccb.springcloud.feign.MovieService: info

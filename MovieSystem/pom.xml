@@ -41,6 +41,27 @@
             <artifactId>Common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--HttpURLConnection会把带有body的get请求转化为get请求，所以我们不用原来的HttpURLConnection，导入httpClient-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <!--这里的版本要与导入的feign-core一致，之前导入8.+的版本会报NoSuchMethodError，其实其调用的放在在Feign10.+之后就移除了-->
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>10.4.0</version>
+        </dependency>
+        <!--一定要加上这个依赖，不然使用ModelAndView时就无法将请求转到指定的html中-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+        </dependency>
     </dependencies>
 
 </project>

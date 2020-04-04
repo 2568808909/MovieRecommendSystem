@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient("MOVIE-USER-SERVICE")
 public interface UserService {
 
-    @PostMapping("/register")
-    HttpResult register(UserRegisterParam param);
+    @PostMapping("/user/register")
+    HttpResult register(@RequestBody UserRegisterParam param);
 
-    @PostMapping("/login")
-    HttpResult login(UserLoginParam param);
+    @PostMapping("/user/login")
+    HttpResult login(@RequestBody UserLoginParam param);
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     HttpResult getUserById(@PathVariable("id") Long id);
 
-    @PutMapping("/psw")
+    @PutMapping("/user/psw")
     HttpResult changePassword(@Validated @RequestBody UserChangePasswordParam param);
 
-    @PutMapping("/logout")
+    @PutMapping("/user/logout")
     HttpResult logout(@Validated @RequestBody LogoutParam param);
 
-    @GetMapping("/isLogin")
-    boolean isLogin(String token);
+    @GetMapping("/user/isLogin")
+    HttpResult isLogin(@RequestBody String token);
 }

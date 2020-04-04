@@ -1,10 +1,10 @@
 package com.ccb.springcloud.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ccb.movie.bean.common.HttpResult;
-import com.ccb.movie.bean.user.vo.LogoutParam;
-import com.ccb.movie.bean.user.vo.UserChangePasswordParam;
-import com.ccb.movie.bean.user.vo.UserLoginParam;
-import com.ccb.movie.bean.user.vo.UserRegisterParam;
+import com.ccb.movie.bean.user.User;
+import com.ccb.movie.bean.user.vo.*;
 import com.ccb.movie.exception.BizException;
 import com.ccb.springcloud.annotation.UserOps;
 import com.ccb.springcloud.feign.UserService;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -32,15 +33,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public HttpResult login(@Validated @RequestBody UserLoginParam param, HttpServletResponse response) {
+    public HttpResult login(@Validated @RequestBody UserLoginParam param,
+                            HttpServletResponse response) {
         HttpResult loginInfo = userService.login(param);
-        if (loginInfo.getCode() == HttpResult.SUCCESS_CODE) {
-            Cookie cookie = new Cookie(TICKET, (String) loginInfo.getData());
+        addLoginCookie(loginInfo, response);
+        return loginInfo;
+    }
+
+    private void addLoginCookie(HttpResult result, HttpServletResponse response) {
+        if (result.getCode() == HttpResult.SUCCESS_CODE) {
+            Map data = (Map) result.getData();
+            Cookie cookie = new Cookie(TICKET, (String) data.get("token"));
             cookie.setMaxAge(86400);  //要设置cookie有效时间才可生效
             cookie.setPath("/");
             response.addCookie(cookie);
         }
-        return loginInfo;
     }
 
     @GetMapping("/{id}")
@@ -58,7 +65,7 @@ public class UserController {
 
     @PutMapping("/logout")
     @UserOps
-    public HttpResult logout(@Validated @RequestBody LogoutParam param,
+    public HttpResult logout(@RequestBody @Validated LogoutParam param,
                              HttpServletResponse response,
                              HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
@@ -72,8 +79,9 @@ public class UserController {
                     break;
                 }
             }
+            return userService.logout(param);
         }
-        return userService.logout(param);
+        return HttpResult.fail("没有您的登陆信息，无需登出");
     }
 
     @GetMapping("/login")

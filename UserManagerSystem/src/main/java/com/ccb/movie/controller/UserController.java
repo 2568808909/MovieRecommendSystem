@@ -54,10 +54,10 @@ public class UserController {
     }
 
     @GetMapping("/isLogin")
-    public boolean isLogin(String token) {
+    public HttpResult isLogin(@RequestBody String token) {
         if (StringUtils.isEmpty(token)) {
             throw new BizException("token不能为空");
         }
-        return userService.isLogin(token);
+        return HttpResult.success(userService.isLogin(token));
     }
 }

@@ -7,12 +7,14 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Aspect
+@Configuration
 public class UserLoginCheck {
     @Autowired
     private UserService userService;
@@ -30,7 +32,8 @@ public class UserLoginCheck {
             for (Cookie cookie : cookies) {
                 if (UserController.TICKET.equals(cookie.getName())) {
                     String token = cookie.getValue();
-                    if (userService.isLogin(token)) {
+                    HttpResult login = userService.isLogin(token);
+                    if (login.getData().equals(true)) {
                         return joinPoint.proceed();
                     }
                     break;

@@ -33,7 +33,7 @@ public class MovieController {
     }
 
     @GetMapping("/page")
-    public HttpResult moviePage(@Validated MovieSearchParam param) {
+    public HttpResult moviePage(@Validated @RequestBody MovieSearchParam param) {
         Movie movie = new Movie();
         movie.setName(param.getName());
         movie.setCoverUrl(param.getCoverUrl());

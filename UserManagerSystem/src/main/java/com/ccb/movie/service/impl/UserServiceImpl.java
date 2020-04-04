@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.user.User;
+import com.ccb.movie.bean.user.vo.LoginMessage;
 import com.ccb.movie.bean.user.vo.UserChangePasswordParam;
 import com.ccb.movie.exception.BizException;
 import com.ccb.movie.mapper.UserMapper;
@@ -34,9 +35,8 @@ public class UserServiceImpl implements UserService {
         user.setCreatedTime(now);
         user.setUpdatedTime(now);
         try {
-            userMapper.insert(user);
-            HttpResult httpResult = loginWithMD5(user.getUsername(), user.getPassword());
-            return HttpResult.success("注册成功", httpResult.getData());
+            int res = userMapper.insert(user);
+            return HttpResult.success(res == 1 ? "注册成功" : "注册失败");
         } catch (DuplicateKeyException e) {
             return HttpResult.fail("用户名已存在");
         }
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean  isLogin(String token) {
+    public Boolean isLogin(String token) {
         return redisTemplate.boundValueOps(token).get() != null;
     }
 
@@ -102,7 +102,10 @@ public class UserServiceImpl implements UserService {
             String token = CommonUtil.MD5(username + System.currentTimeMillis());
             String userStr = JSON.toJSONString(user);
             redisTemplate.opsForValue().set(token, userStr);
-            return HttpResult.success(token);
+            LoginMessage loginMessage=new LoginMessage();
+            loginMessage.setToken(token);
+            loginMessage.setUser(select.get(0));
+            return HttpResult.success(loginMessage);
         } else {
             return HttpResult.fail("用户名或密码错误");
         }
