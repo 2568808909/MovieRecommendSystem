@@ -1,17 +1,15 @@
 package com.ccb.movie.bean.user.vo;
 
 import lombok.Data;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-@ToString
-public class UserLoginParam {
+public class LogoutParam {
+
+    @NotBlank(message = "token不能为空")
+    private String token;
 
     @NotBlank(message = "请输入用户名")
     private String username;
-
-    @NotBlank(message = "请输入密码")
-    private String password;
 }

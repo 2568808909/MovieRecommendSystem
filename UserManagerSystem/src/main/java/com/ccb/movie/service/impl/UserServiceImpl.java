@@ -1,8 +1,11 @@
 package com.ccb.movie.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.user.User;
+import com.ccb.movie.bean.user.vo.UserChangePasswordParam;
+import com.ccb.movie.exception.BizException;
 import com.ccb.movie.mapper.UserMapper;
 import com.ccb.movie.service.UserService;
 import com.ccb.movie.util.CommonUtil;
@@ -32,11 +35,11 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedTime(now);
         try {
             userMapper.insert(user);
-            loginWithMD5(user.getUsername(), user.getPassword());
+            HttpResult httpResult = loginWithMD5(user.getUsername(), user.getPassword());
+            return HttpResult.success("注册成功", httpResult.getData());
         } catch (DuplicateKeyException e) {
             return HttpResult.fail("用户名已存在");
         }
-        return HttpResult.success("注册成功", user);
     }
 
     @Override
@@ -50,6 +53,44 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(userMapper.selectByPrimaryKey(id))
                 .map(HttpResult::success)
                 .orElse(HttpResult.fail("用户不存在"));
+    }
+
+    @Override
+    public HttpResult changePassword(UserChangePasswordParam param) {
+        User select = new User();
+        select.setUsername(param.getUsername());
+        select.setPassword(CommonUtil.MD5(param.getOriginPassword()));
+        User user = userMapper.selectOne(select);
+        if (user == null) {
+            throw new BizException("用户名或原密码不正确");
+        }
+        if (!param.getNewPassword().equals(param.getConfirm())) {
+            throw new BizException("两次输入的新密码不一致");
+        }
+        User update = new User();
+        update.setUpdatedTime(new Date());
+        update.setId(user.getId());
+        update.setPassword(CommonUtil.MD5(param.getNewPassword()));
+        return userMapper.updateByPrimaryKeySelective(update) == 1 ?
+                HttpResult.success() : HttpResult.fail("更新失败了，请稍后再试");
+    }
+
+    @Override
+    public HttpResult logout(String token, String username) {
+        String user = (String) Optional.ofNullable(redisTemplate.boundValueOps(token).get())
+                .map(JSONObject::parseObject)
+                .map(obj -> obj.get("username"))
+                .orElse(null);
+        if (user == null || username.equals(user)) {
+            redisTemplate.delete(token);
+            return HttpResult.success("登出成功");
+        }
+        return HttpResult.fail("请确认token或者username的正确性，token与用户名不匹配");
+    }
+
+    @Override
+    public boolean  isLogin(String token) {
+        return redisTemplate.boundValueOps(token).get() != null;
     }
 
     private HttpResult loginWithMD5(String username, String password) {

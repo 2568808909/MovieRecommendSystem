@@ -21,4 +21,4 @@ feign:
   compression:
     request:
       enabled: true
-      mime-types: application/json
+      mime-types: application/json            #使用feign发请求时以json形式发送

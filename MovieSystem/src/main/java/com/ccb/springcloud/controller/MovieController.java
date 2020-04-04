@@ -1,7 +1,6 @@
 package com.ccb.springcloud.controller;
 
 import com.ccb.movie.bean.common.HttpResult;
-import com.ccb.movie.bean.movie.Rating;
 import com.ccb.movie.bean.movie.vo.MovieAddParam;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
