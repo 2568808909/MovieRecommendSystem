@@ -11,6 +11,7 @@ import com.ccb.springcloud.feign.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public final static String TICKET="ticket";
+    public final static String TICKET = "ticket";
 
     @PostMapping("/register")
     public HttpResult register(@Validated @RequestBody UserRegisterParam param) {
@@ -35,6 +36,8 @@ public class UserController {
         HttpResult loginInfo = userService.login(param);
         if (loginInfo.getCode() == HttpResult.SUCCESS_CODE) {
             Cookie cookie = new Cookie(TICKET, (String) loginInfo.getData());
+            cookie.setMaxAge(86400);  //要设置cookie有效时间才可生效
+            cookie.setPath("/");
             response.addCookie(cookie);
         }
         return loginInfo;
@@ -56,10 +59,10 @@ public class UserController {
     @PutMapping("/logout")
     @UserOps
     public HttpResult logout(@Validated @RequestBody LogoutParam param,
-                      HttpServletResponse response,
-                      HttpServletRequest request) {
+                             HttpServletResponse response,
+                             HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if(cookies!=null) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (TICKET.equals(cookie.getName())) {
                     Cookie c = new Cookie(cookie.getName(), null);
@@ -71,5 +74,10 @@ public class UserController {
             }
         }
         return userService.logout(param);
+    }
+
+    @GetMapping("/login")
+    public ModelAndView login() {
+        return new ModelAndView("/user/login");
     }
 }

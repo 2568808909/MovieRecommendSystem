@@ -37,7 +37,7 @@ public class UserLoginCheck {
                 }
             }
         }
-        response.sendRedirect("/admin/login");
+        response.sendRedirect("/user/login");
         return HttpResult.fail("请先登录");
     }
 }
