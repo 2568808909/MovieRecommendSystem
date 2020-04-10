@@ -15,10 +15,12 @@ import com.ccb.movie.mapper.RatingMapper;
 import com.ccb.movie.mapper.UserRecsMapper;
 import com.ccb.movie.service.MovieService;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -40,19 +42,29 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private UserRecsMapper userRecsMapper;
 
+    @Autowired
+    private Producer<String, String> producer;
+
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+
     @Override
     public void mark(Rating rating) {
         try {
-            if (movieMapper.selectByPrimaryKey(rating.getMovieId()) == null) {
-                throw new BizException("您所评价的电影不存在: " + rating.getMovieId());
+            Long mid = rating.getMovieId();
+            if (movieMapper.selectByPrimaryKey(mid) == null) {
+                throw new BizException("您所评价的电影不存在: " + mid);
             }
-            if (userService.getUserById(rating.getUserId()).getData() == null) {
-                throw new BizException("用户不存在: " + rating.getUserId());
+            Long uid = rating.getUserId();
+            if (userService.getUserById(uid).getData() == null) {
+                throw new BizException("用户不存在: " + uid);
             }
             Date now = new Date();
             rating.setCreatedTime(now);
             rating.setUpdatedTime(now);
             ratingMapper.insert(rating);
+            producer.send(new ProducerRecord<>("movie-rating", uid+"|"+mid+"|"+rating.getRating()+"|"+now.getTime()));
+            redisTemplate.boundListOps("uid:"+uid).rightPush(mid+":"+rating.getRating());
         } catch (DuplicateKeyException e) {
             throw new BizException("您已经对该电影评过分了哦，不能多次评分哦！");
         }
@@ -90,7 +102,7 @@ public class MovieServiceImpl implements MovieService {
         return movieMapper.updateByPrimaryKeySelective(movie);
     }
 
-//    select * from rating where user_id=2 and movie_id=3208
+    //    select * from rating where user_id=2 and movie_id=3208
 //    select * from rating where movie_id=3208
 //    select * from rating where user_id=2
     @Override

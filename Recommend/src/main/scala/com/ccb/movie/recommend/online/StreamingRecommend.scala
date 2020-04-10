@@ -36,11 +36,12 @@ object StreamingRecommend {
     */
   def getUserRecentRatings(redisClient: Jedis, K: Int, userId: Int, movieId: Int, score: Double): Array[(Int, Double)] = {
     // lrange：返回指定key对应的list的指定范围的元素，返回List<String>
-    redisClient.lrange("uid:" + userId.toString, 0, K).map { line =>
+    val array = redisClient.lrange("uid:" + userId.toString, 0, K).map { line =>
       // 每一个元素都是mid:score
       val attr = line.split(":")
       (attr(0).toInt, attr(1).toDouble)
     }.toArray
+    array
   }
 
   /**
@@ -60,7 +61,7 @@ object StreamingRecommend {
     }.take(K)
 
     // 从RATING表中获取指定用户评过分的所有电影的mid
-    val querySQL = "SELECT mid FROM " + Constants.DB_RATING + " WHERE uid=?"
+    val querySQL = "SELECT movie_id FROM " + Constants.DB_RATING + " WHERE user_id=?"
     val params = Array[Any](uid)
 
     // 创建保存所有打过分的电影mid的ArrayBuffer
@@ -71,7 +72,7 @@ object StreamingRecommend {
       override def process(rs: ResultSet): Unit = {
         while (rs.next) {
           // 将所有获取到的指定用户评过分的mid添加到ArrayBuffer中
-          ratedMovies.add(rs.getString("mid").toInt)
+          ratedMovies.add(rs.getString("movie_id").toInt)
         }
       }
     })
@@ -193,7 +194,6 @@ object StreamingRecommend {
   }
 
   def createKafkaStream(ssc: StreamingContext, brokers: String, topic: String) = {
-    //kafka的地址 val brobrokers = "192.168.56.150:9092,192.168.56.151:9092,192.168.56.152:9092"
 
     //kafka消费者配置
     val kafkaParam = Map(
@@ -256,19 +256,19 @@ object StreamingRecommend {
     //kafka消费者配置
     val kafkaParam = Map(
       "bootstrap.servers" -> ConfigurationManager.properties.getProperty(Constants.KAFKA_BROKERS), //用于初始化链接到集群的地址
-      "key.deserializer" -> classOf[StringDeserializer],
-      "value.deserializer" -> classOf[StringDeserializer],
+      "key.deserializer" -> classOf[StringDeserializer],      //key反序列化方式
+      "value.deserializer" -> classOf[StringDeserializer],    //value反序列化方式
       //用于标识这个消费者属于哪个消费团体
       "group.id" -> "recommender-consumer-group",
       //如果没有初始化偏移量或者当前的偏移量不存在任何服务器上，可以使用这个配置属性
       //可以使用这个配置，latest自动重置偏移量为最新的偏移量
       "auto.offset.reset" -> "latest",
-      //如果是true，则这个消费者的偏移量会在后台自动提交
+      //如果是true，则这个消费者的偏移量会在后台自动提交(取消offset自动提交)
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )
 
     //创建DStream，返回接收到的输入数据
-    var unifiedStream = KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent,
+    val unifiedStream = KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent,
       ConsumerStrategies.Subscribe[String, String](Array(ConfigurationManager.properties.getProperty(Constants.KAFKA_TO_TOPIC)), kafkaParam))
 
     // 将流式数据汇总的msg转化为指定的数据格式

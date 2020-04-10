@@ -60,7 +60,7 @@ object Constants {
 	val DB_MOVIE_RECS = "movie_recs"
 
 	//实时推荐电影表
-	val DB_STREAM_RECS = "StreamRecs"
+	val DB_STREAM_RECS = "stream_recs"
 
 
 	//***************  ES ******************

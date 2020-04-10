@@ -92,8 +92,8 @@ CREATE TABLE `RateMoreRecentlyMovies` (
 -- ----------------------------
 -- Table structure for streamrecs
 -- ----------------------------
-DROP TABLE IF EXISTS `StreamRecs`;
-CREATE TABLE `StreamRecs` (
+DROP TABLE IF EXISTS `stream_recs`;
+CREATE TABLE `stream_recs` (
   `uid` int(11) DEFAULT NULL,
   `recs` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
