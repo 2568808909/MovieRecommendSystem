@@ -14,4 +14,6 @@ public interface MovieService {
     int addMovie(Movie movie);
 
     int updateMovie(Movie movie);
+
+    HttpResult offlineRecommend(Integer uid);
 }

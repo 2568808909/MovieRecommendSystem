@@ -5,10 +5,14 @@ import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.common.PageInfo;
 import com.ccb.movie.bean.movie.Movie;
 import com.ccb.movie.bean.movie.Rating;
+import com.ccb.movie.bean.movie.UserRecs;
+import com.ccb.movie.bean.movie.vo.MovieRecommendRes;
+import com.ccb.movie.bean.movie.vo.OfflineRecommend;
 import com.ccb.movie.exception.BizException;
 import com.ccb.movie.feign.UserService;
 import com.ccb.movie.mapper.MovieMapper;
 import com.ccb.movie.mapper.RatingMapper;
+import com.ccb.movie.mapper.UserRecsMapper;
 import com.ccb.movie.service.MovieService;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +20,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -30,6 +36,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRecsMapper userRecsMapper;
 
     @Override
     public void mark(Rating rating) {
@@ -79,5 +88,24 @@ public class MovieServiceImpl implements MovieService {
     public int updateMovie(Movie movie) {
         movie.setUpdatedTime(new Date());
         return movieMapper.updateByPrimaryKeySelective(movie);
+    }
+
+//    select * from rating where user_id=2 and movie_id=3208
+//    select * from rating where movie_id=3208
+//    select * from rating where user_id=2
+    @Override
+    public HttpResult offlineRecommend(Integer uid) {
+        UserRecs userRecs = new UserRecs();
+        userRecs.setUid(uid);
+        List<UserRecs> res = userRecsMapper.select(userRecs);
+        List<OfflineRecommend> recommends = res.stream().map(ur -> {
+            String[] movieAndScore = ur.getRecs().split("\\|");
+            List<MovieRecommendRes> recommend = Arrays.stream(movieAndScore).map(str -> {
+                String[] ms = str.split(":");
+                return new MovieRecommendRes(Integer.valueOf(ms[0]), Double.valueOf(ms[1]));
+            }).collect(Collectors.toList());
+            return new OfflineRecommend(ur.getUid(), recommend);
+        }).collect(Collectors.toList());
+        return HttpResult.success(recommends);
     }
 }

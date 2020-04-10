@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public HttpResult register(User user) {
-        System.out.println(user);
         user.setPassword(CommonUtil.MD5(user.getPassword()));
         Date now = new Date();
         user.setCreatedTime(now);

@@ -8,6 +8,7 @@ import com.ccb.movie.bean.movie.vo.MovieAddParam;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
+import com.ccb.movie.exception.BizException;
 import com.ccb.movie.service.MovieService;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -77,5 +78,11 @@ public class MovieController {
         movie.setId(param.getId());
         movieService.updateMovie(movie);
         return HttpResult.success();
+    }
+
+    @GetMapping("/offline/recommend/{uid}")
+    public HttpResult offlineRecommend(@PathVariable("uid") Integer uid){
+        if(uid<0) throw new BizException("请输入正确的用户id");
+        return movieService.offlineRecommend(uid);
     }
 }
