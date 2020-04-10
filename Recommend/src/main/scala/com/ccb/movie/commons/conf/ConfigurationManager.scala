@@ -6,6 +6,9 @@
 
 package com.ccb.movie.commons.conf
 
+import java.util.Properties
+
+import com.ccb.movie.recommend.offline.OfflineRecommendTrainer
 import org.apache.commons.configuration2.{FileBasedConfiguration, PropertiesConfiguration}
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder
 import org.apache.commons.configuration2.builder.fluent.Parameters
@@ -15,10 +18,15 @@ import org.apache.commons.configuration2.builder.fluent.Parameters
   */
 object ConfigurationManager {
 
-  private val params = new Parameters()
-  private val builder = new FileBasedConfigurationBuilder[FileBasedConfiguration](classOf[PropertiesConfiguration])
-    .configure(params.properties().setFileName("recommend.properties"))
+  val properties:Properties=new Properties()
+  properties.load(OfflineRecommendTrainer.getClass.getResourceAsStream("/recommend.properties"))
+
+//  private val params = new Parameters()
+//  private val builder = new FileBasedConfigurationBuilder[FileBasedConfiguration](classOf[PropertiesConfiguration])
+//    .configure(params.properties().setFileName("recommend.properties"))
   //配置对象
-  val config = builder.getConfiguration()
+  //val config = builder.getConfiguration()
+
+
 
 }

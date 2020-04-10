@@ -10,6 +10,7 @@ import com.ccb.movie.feign.UserService;
 import com.ccb.movie.mapper.MovieMapper;
 import com.ccb.movie.mapper.RatingMapper;
 import com.ccb.movie.service.MovieService;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,6 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private UserService userService;
 
-    @Transactional
     @Override
     public void mark(Rating rating) {
         try {

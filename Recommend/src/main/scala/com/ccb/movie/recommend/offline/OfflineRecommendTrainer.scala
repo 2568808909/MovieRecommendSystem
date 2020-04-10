@@ -1,6 +1,7 @@
 package com.ccb.movie.recommend.offline
 
 import java.text.DecimalFormat
+import java.util.Properties
 
 import com.ccb.movie.commons.conf.ConfigurationManager
 import com.ccb.movie.commons.constant.Constants
@@ -30,15 +31,18 @@ object OfflineRecommendTrainer {
 
     //创建全局配置
     val params = scala.collection.mutable.Map[String, String]()
+//    val properties = new Properties()
+//    properties.load(OfflineRecommendTrainer.getClass.getResourceAsStream("/recommend.properties"))
     // Spark配置
     params += "spark.cores" -> sparkMaster
     // MySQL配置
-    params += "mysql.url" -> ConfigurationManager.config.getString(Constants.JDBC_URL)
-    params += "mysql.user" -> ConfigurationManager.config.getString(Constants.JDBC_USER)
-    params += "mysql.password" -> ConfigurationManager.config.getString(Constants.JDBC_PASSWORD)
+    params += "mysql.url" -> ConfigurationManager.properties.getProperty(Constants.JDBC_URL)
+    params += "mysql.user" -> ConfigurationManager.properties.getProperty(Constants.JDBC_USER)
+    params += "mysql.password" -> ConfigurationManager.properties.getProperty(Constants.JDBC_PASSWORD)
     // Redis配置
-    params += "redis.host" -> ConfigurationManager.config.getString(Constants.REDIS_HOST)
-    params += "redis.port" -> ConfigurationManager.config.getString(Constants.REDIS_PORT)
+    params += "redis.host" -> ConfigurationManager.properties.getProperty(Constants.REDIS_HOST)
+    params += "redis.port" -> ConfigurationManager.properties.getProperty(Constants.REDIS_PORT)
+    println(params)
 
     // 定义MySqlDB的配置对象，用implicit修饰，当函数调用有隐藏参数时会默认传入
     implicit val mySqlConfig: MySqlConfig = MySqlConfig(params("mysql.url"), params("mysql.user"), params("mysql.password"))
@@ -76,16 +80,15 @@ object OfflineRecommendTrainer {
       .option("user", mySqlConfig.user)
       .option("password", mySqlConfig.password)
       .load()
-      .select($"mid", $"uid", $"score")
+      .select($"movie_id", $"user_id", $"rating")
       .cache
 
     // 通过select选择rating表中的uid列，去重，将Row类型转化为Int类型，缓存
     val users = ratings
-      .select($"uid")
+      .select($"user_id")
       .distinct
-      .map(r => r.getAs[Int]("uid"))
+      .map(r => r.getAs[Long]("user_id").toInt)
       .cache
-
 
     // 通过select选择rating表中的mid列，去重，将Row类型转化为Int类型，缓存
     val movies = spark.read
@@ -95,34 +98,34 @@ object OfflineRecommendTrainer {
       .option("user", mySqlConfig.user)
       .option("password", mySqlConfig.password)
       .load()
-      .select($"mid")
+      .select($"id")
       .distinct
-      .map(r => r.getAs[Int]("mid"))
+      .map(r => r.getAs[Long]("id").toInt)
       .cache
 
-    // 将从MySQL获取到的rating数据，转化为训练数据格式
-    //    val trainData = ratings.map { line =>
-    //      Rating(line.getAs[Int]("uid"), line.getAs[Int]("mid"), line.getAs[Double]("score"))
-    //    }.rdd.cache()
-    //
-    //    // rank：要使用的特征个数，即维度
-    //    // iterations：ALS算法迭代次数
-    //    // lambda：正则化参数
-    //    val (rank, iterations, lambda) = (50, 5, 0.01)
-    //
-    //    // 将训练数据和参数传入ALS模型进行训练，返回结果模型
-    //    val model = ALS.train(trainData, rank, iterations, lambda)
-    //
-    //    // 计算为用户推荐的电影集合矩阵 RDD[UserRecommendation(id: Int, recs: Seq[Rating])]
-    //    calculateUserRecs(maxRecs, model, users, movies)
-    //    // 计算与某个电影最相似的N个电影
-    //    calculateProductRecs(maxRecs, model, movies)
-    //
-    //    // 将缓存的数据从内存中移除
-    //    ratings.unpersist()
-    //    users.unpersist()
-    //    movies.unpersist()
-    //    trainData.unpersist()
+    //将从MySQL获取到的rating数据，转化为训练数据格式
+    val trainData = ratings.map { line =>
+      Rating(line.getAs[Long]("user_id").toInt, line.getAs[Long]("movie_id").toInt,line.getAs[Int]("rating"))
+    }.rdd.cache()
+
+    // rank：要使用的特征个数，即维度
+    // iterations：ALS算法迭代次数
+    // lambda：正则化参数
+    val (rank, iterations, lambda) = (50, 5, 0.01)
+
+    // 将训练数据和参数传入ALS模型进行训练，返回结果模型
+    val model = ALS.train(trainData, rank, iterations, lambda)
+
+    // 计算为用户推荐的电影集合矩阵 RDD[UserRecommendation(id: Int, recs: Seq[Rating])]
+    calculateUserRecs(maxRecs, model, users, movies)
+    // 计算与某个电影最相似的N个电影
+    calculateProductRecs(maxRecs, model, movies)
+
+    // 将缓存的数据从内存中移除
+    ratings.unpersist()
+    users.unpersist()
+    movies.unpersist()
+    trainData.unpersist()
 
   }
 
@@ -135,9 +138,9 @@ object OfflineRecommendTrainer {
     * 将此RDD传入模型中，模型会预测用户对每一个产品的评分
     * 获取到所有用户对所有产品的预测评分后，按照用户对评分进行排序，获取前maxRes个产品，记录起来进行推荐
     *
-    * @param maxRecs 最大推荐数目
-    * @param model ALS训练出来的模型
-    * @param users 所有的用户id
+    * @param maxRecs  最大推荐数目
+    * @param model    ALS训练出来的模型
+    * @param users    所有的用户id
     * @param products 所有的产品(电影)id
     */
   private def calculateUserRecs(maxRecs: Int, model: MatrixFactorizationModel, users: Dataset[Int], products: Dataset[Int])(implicit mySqlConfig: MySqlConfig): Unit = {
@@ -178,6 +181,8 @@ object OfflineRecommendTrainer {
       UserRecs(uid, recommendations.mkString("|"))
     }.toDF()
 
+    recommendations.show
+
     // 将推荐结果写入MySQL
     recommendations.write
       .format("jdbc")
@@ -198,9 +203,9 @@ object OfflineRecommendTrainer {
     * 保留相似度大于0.6的结果，并对相似度排序
     * 取前maxRes的产品
     *
-    * @param maxRecs 最大推荐数目
-    * @param model ALS训练出来的模型
-    * @param products 产品id
+    * @param maxRecs     最大推荐数目
+    * @param model       ALS训练出来的模型
+    * @param products    产品id
     * @param mySqlConfig mysql配置
     */
   private def calculateProductRecs(maxRecs: Int, model: MatrixFactorizationModel, products: Dataset[Int])(implicit mySqlConfig: MySqlConfig): Unit = {
@@ -285,8 +290,8 @@ object OfflineRecommendTrainer {
   /**
     * 计算两个向量的余弦相似度
     * 有两个向量a，b,则ab之间的余弦相似度cosθ为：
-    *  a·b =||a||*||b|| cosθ => cosθ =a·b / ||a||*||b||
-    *  ||a|| 为a的第二范数(欧式范数)，也就是其长度
+    * a·b =||a||*||b|| cosθ => cosθ =a·b / ||a||*||b||
+    * ||a|| 为a的第二范数(欧式范数)，也就是其长度
     *
     * @param vec1 向量1
     * @param vec2 向量2

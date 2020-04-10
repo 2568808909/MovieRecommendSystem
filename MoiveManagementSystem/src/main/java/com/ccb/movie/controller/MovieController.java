@@ -9,6 +9,8 @@ import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
 import com.ccb.movie.service.MovieService;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -22,13 +24,23 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
+    @Autowired
+    private Producer<String, String> producer;
+
     @PostMapping("/mark")
     public HttpResult mark(@Validated @RequestBody RatingParam param) {
-        Rating rating=new Rating();
+        Rating rating = new Rating();
         rating.setUserId(param.getUserId());
         rating.setMovieId(param.getMovieId());
         rating.setRating(param.getRating());
         movieService.mark(rating);
+        String msg = "mid:" +
+                param.getMovieId() +
+                "|uid:" +
+                param.getUserId() +
+                "|rating:" +
+                param.getRating();
+        producer.send(new ProducerRecord<>("movie-mark", msg));
         return HttpResult.success();
     }
 

@@ -207,7 +207,7 @@ object StreamingRecommend {
       "auto.offset.reset" -> "latest",
       //如果是true，则这个消费者的偏移量会在后台自动提交
       "enable.auto.commit" -> (false: java.lang.Boolean)
-    );
+    )
 
     //创建DStream，返回接收到的输入数据
     var stream = KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent, ConsumerStrategies.Subscribe[String, String](Array(topic), kafkaParam))
@@ -235,9 +235,9 @@ object StreamingRecommend {
     // Spark配置
     params += "spark.cores" -> sparkMaster
     // MySQL配置
-    params += "mysql.url" -> ConfigurationManager.config.getString(Constants.JDBC_URL)
-    params += "mysql.user" -> ConfigurationManager.config.getString(Constants.JDBC_USER)
-    params += "mysql.password" -> ConfigurationManager.config.getString(Constants.JDBC_PASSWORD)
+    params += "mysql.url" -> ConfigurationManager.properties.getProperty(Constants.JDBC_URL)
+    params += "mysql.user" -> ConfigurationManager.properties.getProperty(Constants.JDBC_USER)
+    params += "mysql.password" -> ConfigurationManager.properties.getProperty(Constants.JDBC_PASSWORD)
 
     // 定义MySQL的配置对象
     implicit val mySqlConfig: MySqlConfig = MySqlConfig(params("mysql.url"), params("mysql.user"), params("mysql.password"))
@@ -255,7 +255,7 @@ object StreamingRecommend {
 
     //kafka消费者配置
     val kafkaParam = Map(
-      "bootstrap.servers" -> ConfigurationManager.config.getString(Constants.KAFKA_BROKERS), //用于初始化链接到集群的地址
+      "bootstrap.servers" -> ConfigurationManager.properties.getProperty(Constants.KAFKA_BROKERS), //用于初始化链接到集群的地址
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       //用于标识这个消费者属于哪个消费团体
@@ -269,7 +269,7 @@ object StreamingRecommend {
 
     //创建DStream，返回接收到的输入数据
     var unifiedStream = KafkaUtils.createDirectStream[String, String](ssc, LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String, String](Array(ConfigurationManager.config.getString(Constants.KAFKA_TO_TOPIC)), kafkaParam))
+      ConsumerStrategies.Subscribe[String, String](Array(ConfigurationManager.properties.getProperty(Constants.KAFKA_TO_TOPIC)), kafkaParam))
 
     // 将流式数据汇总的msg转化为指定的数据格式
     val dataDStream = unifiedStream.map { msg =>

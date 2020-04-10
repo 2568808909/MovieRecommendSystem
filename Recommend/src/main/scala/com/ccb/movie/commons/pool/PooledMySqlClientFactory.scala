@@ -161,10 +161,10 @@ object CreateMySqlPool {
   def apply(): GenericObjectPool[MySqlProxy] = {
     if (this.genericObjectPool == null) {
       this.synchronized {
-        val jdbcUrl = ConfigurationManager.config.getString(Constants.JDBC_URL)
-        val jdbcUser = ConfigurationManager.config.getString(Constants.JDBC_USER)
-        val jdbcPassword = ConfigurationManager.config.getString(Constants.JDBC_PASSWORD)
-        val size = ConfigurationManager.config.getInt(Constants.POOL_SIZE)
+        val jdbcUrl = ConfigurationManager.properties.getProperty(Constants.JDBC_URL)
+        val jdbcUser = ConfigurationManager.properties.getProperty(Constants.JDBC_USER)
+        val jdbcPassword = ConfigurationManager.properties.getProperty(Constants.JDBC_PASSWORD)
+        val size = ConfigurationManager.properties.getProperty(Constants.POOL_SIZE).toInt
 
         val pooledFactory = new PooledMySqlClientFactory(jdbcUrl, jdbcUser, jdbcPassword)
         val poolConfig = {

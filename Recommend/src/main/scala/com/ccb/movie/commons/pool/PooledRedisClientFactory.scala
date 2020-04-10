@@ -48,9 +48,9 @@ object CreateRedisPool {
   def apply(): GenericObjectPool[Jedis] = {
     if (this.genericObjectPool == null) {
       this.synchronized {
-        val redisHost = ConfigurationManager.config.getString(Constants.REDIS_HOST)
-        val redisPort = ConfigurationManager.config.getString(Constants.REDIS_PORT).toInt
-        val size = ConfigurationManager.config.getInt(Constants.POOL_SIZE)
+        val redisHost = ConfigurationManager.properties.getProperty(Constants.REDIS_HOST)
+        val redisPort = ConfigurationManager.properties.getProperty(Constants.REDIS_PORT).toInt
+        val size = ConfigurationManager.properties.getProperty(Constants.POOL_SIZE).toInt
 
         val pooledFactory = new PooledRedisClientFactory(redisHost, redisPort)
         val poolConfig = {

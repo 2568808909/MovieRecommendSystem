@@ -30,10 +30,10 @@ object Constants {
 	//*****************  MySQL中的表名  ***************
 
 	//电影表名
-	val DB_MOVIE = "Movie"
+	val DB_MOVIE = "movie"
 
 	//电影评分的表名
-	val DB_RATING = "MovieRating"
+	val DB_RATING = "rating"
 
 	//电影标签的表名
 	val DB_TAG = "Tag"
@@ -54,10 +54,10 @@ object Constants {
 	val DB_RATE_MORE_RECENTLY_MOVIES = "RateMoreRecentlyMovies"
 
 	//用户的推荐矩阵
-	val DB_USER_RECS= "UserRecs"
+	val DB_USER_RECS= "user_recs"
 
 	//电影的相似度矩阵
-	val DB_MOVIE_RECS = "MovieRecs"
+	val DB_MOVIE_RECS = "movie_recs"
 
 	//实时推荐电影表
 	val DB_STREAM_RECS = "StreamRecs"

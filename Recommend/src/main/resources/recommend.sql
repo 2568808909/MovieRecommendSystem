@@ -64,8 +64,8 @@ CREATE TABLE `MovieRating` (
 -- ----------------------------
 -- Table structure for movierecs
 -- ----------------------------
-DROP TABLE IF EXISTS `MovieRecs`;
-CREATE TABLE `MovieRecs` (
+DROP TABLE IF EXISTS `movie_recs`;
+CREATE TABLE `movie_recs` (
   `mid` int(11) DEFAULT NULL,
   `recs` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -126,8 +126,8 @@ CREATE TABLE `User` (
 -- ----------------------------
 -- Table structure for userrecs
 -- ----------------------------
-DROP TABLE IF EXISTS `UserRecs`;
-CREATE TABLE `UserRecs` (
+DROP TABLE IF EXISTS `user_recs`;
+CREATE TABLE `user_recs` (
   `uid` int(11) DEFAULT NULL,
   `recs` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
