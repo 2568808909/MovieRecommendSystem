@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccb.springcloud.mapper.MovieMapper">
+    <select id="selectByMovieIds" resultType="com.ccb.movie.bean.movie.Movie">
+        select * from movie where id in
+        <foreach collection="movies" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

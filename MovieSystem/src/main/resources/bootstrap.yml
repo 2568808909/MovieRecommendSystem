@@ -28,3 +28,10 @@ logging:
   level:
     #这个接口的调用日志以debug级别进行打印
     com.ccb.springcloud.feign.MovieService: info
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  #别名包
+  type-aliases-package: com.ccb.movie.bean.movie
+  configuration:
+    #匹配驼峰规则
+    map-underscore-to-camel-case: true

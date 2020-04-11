@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieRecommendRes implements Comparable<MovieRecommendRes> {
+public class MovieRecommendRes implements Comparable<MovieRecommendRes>, Serializable {
 
     private Integer mid;
 

@@ -1,6 +1,7 @@
 package com.ccb.movie.bean.movie;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Data
 @ToString
+@NoArgsConstructor
 public class Movie {
 
     @Id

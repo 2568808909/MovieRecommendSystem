@@ -1,12 +1,11 @@
 package com.ccb.springcloud.controller;
 
 import com.ccb.movie.bean.common.HttpResult;
-import com.ccb.movie.bean.movie.vo.MovieAddParam;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
-import com.ccb.movie.bean.movie.vo.MovieUpdateParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
+import com.ccb.movie.exception.BizException;
 import com.ccb.springcloud.annotation.UserOps;
-import com.ccb.springcloud.feign.MovieService;
+import com.ccb.springcloud.service.MovieWebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,28 @@ import org.springframework.web.bind.annotation.*;
 public class MovieController {
 
     @Autowired
-    private MovieService movieService;
+    private MovieWebService movieWebService;
 
     @PostMapping("/mark")
     @UserOps
     public HttpResult mark(@RequestBody @Validated RatingParam param) {
-        return movieService.mark(param);
+        return movieWebService.mark(param);
     }
 
     @GetMapping("/page")
     public HttpResult moviePage(@Validated MovieSearchParam param) {
-        return movieService.moviePage(param);
+        return movieWebService.moviePage(param);
     }
 
+    @GetMapping("/offline/recommend/{uid}")
+    public HttpResult offlineRecommend(@PathVariable("uid") Integer uid) {
+        if (uid <= 0) throw new BizException("请输入正确的uid");
+        return movieWebService.offlineRecommend(uid);
+    }
+
+    @GetMapping("/streaming/recommend/{uid}")
+    public HttpResult streamingRecommend(@PathVariable("uid") Integer uid) {
+        if (uid <= 0) throw new BizException("请输入正确的uid");
+        return movieWebService.onlineRecommend(uid);
+    }
 }

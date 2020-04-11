@@ -5,13 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recommend {
+public class Recommend implements Serializable {
 
     private Integer uid;
 

@@ -3,10 +3,11 @@ package com.ccb.springcloud.feign;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
+import com.ccb.movie.bean.movie.vo.Recommend;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient("MOVIE-MANAGEMENT-SERVICE")
 public interface MovieService {
@@ -17,4 +18,9 @@ public interface MovieService {
     @GetMapping("/movie/page")
     HttpResult moviePage(MovieSearchParam param);
 
+    @GetMapping("/movie/offline/recommend/{uid}")
+    HttpResult offlineRecommend(@PathVariable("uid") Integer uid);
+
+    @GetMapping("/movie/streaming/recommend/{uid}")
+    HttpResult streamingRecommend(@PathVariable("uid") Integer uid);
 }
