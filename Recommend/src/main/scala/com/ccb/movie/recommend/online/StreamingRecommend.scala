@@ -178,18 +178,23 @@ object StreamingRecommend {
         }
       }
     })
-
+    val flag = lastTimeRecs.isEmpty
     // 将新推荐的数据添加到lastTimeRecs中
     lastTimeRecs.addAll(newRecommends.toIterable)
 
     // 对新旧融合的lastTimeRecs进行排序，并取出MAX_REC_COUNT个相关度最高的数据，转化为字符串形式
     val newRecs = lastTimeRecs.toList.sortWith(_._2 < _._2).slice(0, MAX_REC_COUNT).toArray
       .map(item => item._1 + ":" + item._2).mkString("|")
-
-    // 使用最新得到的MAX_REC_COUNT个最相关数据更新MySQL
-    val updateSQL = "UPDATE " + Constants.DB_STREAM_RECS + " SET recs=? WHERE uid=? "
-    val updateParams = Array[Any](newRecs, uid)
-    mysqlClient.executeUpdate(updateSQL, updateParams)
+    if (!flag) {
+      // 使用最新得到的MAX_REC_COUNT个最相关数据更新MySQL
+      val updateSQL = "UPDATE " + Constants.DB_STREAM_RECS + " SET recs=? WHERE uid=? "
+      val updateParams = Array[Any](newRecs, uid)
+      mysqlClient.executeUpdate(updateSQL, updateParams)
+    } else {
+      val updateSQL = s"insert into ${Constants.DB_STREAM_RECS} values(?,?)"
+      val updateParams = Array[Any](uid, newRecs)
+      mysqlClient.executeUpdate(updateSQL, updateParams)
+    }
 
   }
 
@@ -256,8 +261,8 @@ object StreamingRecommend {
     //kafka消费者配置
     val kafkaParam = Map(
       "bootstrap.servers" -> ConfigurationManager.properties.getProperty(Constants.KAFKA_BROKERS), //用于初始化链接到集群的地址
-      "key.deserializer" -> classOf[StringDeserializer],      //key反序列化方式
-      "value.deserializer" -> classOf[StringDeserializer],    //value反序列化方式
+      "key.deserializer" -> classOf[StringDeserializer], //key反序列化方式
+      "value.deserializer" -> classOf[StringDeserializer], //value反序列化方式
       //用于标识这个消费者属于哪个消费团体
       "group.id" -> "recommender-consumer-group",
       //如果没有初始化偏移量或者当前的偏移量不存在任何服务器上，可以使用这个配置属性
