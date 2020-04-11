@@ -19,6 +19,7 @@ import com.ccb.movie.service.MovieService;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -47,10 +48,13 @@ public class MovieServiceImpl implements MovieService {
     private Producer<String, String> producer;
 
     @Autowired
-    private RedisTemplate<String,String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private StreamRecsMapper streamRecsMapper;
+
+    @Value("${image.path}")
+    private String imagePath;
 
     @Override
     public void mark(Rating rating) {
@@ -67,8 +71,8 @@ public class MovieServiceImpl implements MovieService {
             rating.setCreatedTime(now);
             rating.setUpdatedTime(now);
             ratingMapper.insert(rating);
-            producer.send(new ProducerRecord<>("movie-rating", uid+"|"+mid+"|"+rating.getRating()+"|"+now.getTime()));
-            redisTemplate.boundListOps("uid:"+uid).rightPush(mid+":"+rating.getRating());
+            producer.send(new ProducerRecord<>("movie-rating", uid + "|" + mid + "|" + rating.getRating() + "|" + now.getTime()));
+            redisTemplate.boundListOps("uid:" + uid).rightPush(mid + ":" + rating.getRating());
         } catch (DuplicateKeyException e) {
             throw new BizException("您已经对该电影评过分了哦，不能多次评分哦！");
         }
@@ -83,6 +87,7 @@ public class MovieServiceImpl implements MovieService {
         pageInfo.setLastPage(pageStart + pageSize >= count);
         pageInfo.setTotalCount(count);
         pageInfo.setPageSize(pageSize);
+        movies.forEach(m -> m.setCoverUrl(imagePath + m.getCoverUrl()));
         return HttpPageResult.success(movies, pageInfo);
     }
 
@@ -127,7 +132,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public HttpResult streamingRecommend(Integer uid) {
-        StreamRecs streamRecs=new StreamRecs();
+        StreamRecs streamRecs = new StreamRecs();
         streamRecs.setUid(uid);
         List<StreamRecs> res = streamRecsMapper.select(streamRecs);
         List<Recommend> recommends = res.stream().map(ur -> {

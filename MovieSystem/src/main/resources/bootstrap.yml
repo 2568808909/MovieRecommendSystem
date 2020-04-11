@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 88    #用了nginx占用了80端口，不嫩在使用80了，之后会用nginx对本系统进行一个反向代理
 spring:
   application:
     name: movie-system

@@ -29,12 +29,14 @@ public class MovieController {
     }
 
     @GetMapping("/offline/recommend/{uid}")
+    @UserOps
     public HttpResult offlineRecommend(@PathVariable("uid") Integer uid) {
         if (uid <= 0) throw new BizException("请输入正确的uid");
         return movieWebService.offlineRecommend(uid);
     }
 
     @GetMapping("/streaming/recommend/{uid}")
+    @UserOps
     public HttpResult streamingRecommend(@PathVariable("uid") Integer uid) {
         if (uid <= 0) throw new BizException("请输入正确的uid");
         return movieWebService.onlineRecommend(uid);
