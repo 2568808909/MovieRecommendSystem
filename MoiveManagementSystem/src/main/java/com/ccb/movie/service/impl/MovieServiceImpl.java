@@ -5,16 +5,17 @@ import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.common.PageInfo;
 import com.ccb.movie.bean.movie.Movie;
 import com.ccb.movie.bean.movie.Rating;
+import com.ccb.movie.bean.movie.StreamRecs;
 import com.ccb.movie.bean.movie.UserRecs;
 import com.ccb.movie.bean.movie.vo.MovieRecommendRes;
-import com.ccb.movie.bean.movie.vo.OfflineRecommend;
+import com.ccb.movie.bean.movie.vo.Recommend;
 import com.ccb.movie.exception.BizException;
 import com.ccb.movie.feign.UserService;
 import com.ccb.movie.mapper.MovieMapper;
 import com.ccb.movie.mapper.RatingMapper;
+import com.ccb.movie.mapper.StreamRecsMapper;
 import com.ccb.movie.mapper.UserRecsMapper;
 import com.ccb.movie.service.MovieService;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
+
+    @Autowired
+    private StreamRecsMapper streamRecsMapper;
 
     @Override
     public void mark(Rating rating) {
@@ -110,13 +114,29 @@ public class MovieServiceImpl implements MovieService {
         UserRecs userRecs = new UserRecs();
         userRecs.setUid(uid);
         List<UserRecs> res = userRecsMapper.select(userRecs);
-        List<OfflineRecommend> recommends = res.stream().map(ur -> {
+        List<Recommend> recommends = res.stream().map(ur -> {
             String[] movieAndScore = ur.getRecs().split("\\|");
             List<MovieRecommendRes> recommend = Arrays.stream(movieAndScore).map(str -> {
                 String[] ms = str.split(":");
                 return new MovieRecommendRes(Integer.valueOf(ms[0]), Double.valueOf(ms[1]));
             }).collect(Collectors.toList());
-            return new OfflineRecommend(ur.getUid(), recommend);
+            return new Recommend(ur.getUid(), recommend);
+        }).collect(Collectors.toList());
+        return HttpResult.success(recommends);
+    }
+
+    @Override
+    public HttpResult streamingRecommend(Integer uid) {
+        StreamRecs streamRecs=new StreamRecs();
+        streamRecs.setUid(uid);
+        List<StreamRecs> res = streamRecsMapper.select(streamRecs);
+        List<Recommend> recommends = res.stream().map(ur -> {
+            String[] movieAndScore = ur.getRecs().split("\\|");
+            List<MovieRecommendRes> recommend = Arrays.stream(movieAndScore).map(str -> {
+                String[] ms = str.split(":");
+                return new MovieRecommendRes(Integer.valueOf(ms[0]), Double.valueOf(ms[1]));
+            }).sorted().collect(Collectors.toList());
+            return new Recommend(ur.getUid(), recommend);
         }).collect(Collectors.toList());
         return HttpResult.success(recommends);
     }

@@ -85,4 +85,10 @@ public class MovieController {
         if(uid<0) throw new BizException("请输入正确的用户id");
         return movieService.offlineRecommend(uid);
     }
+
+    @GetMapping("/streaming/recommend/{uid}")
+    public HttpResult streamingRecommend(@PathVariable("uid") Integer uid){
+        if(uid<0) throw new BizException("请输入正确的用户id");
+        return movieService.streamingRecommend(uid);
+    }
 }

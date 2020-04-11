@@ -16,4 +16,6 @@ public interface MovieService {
     int updateMovie(Movie movie);
 
     HttpResult offlineRecommend(Integer uid);
+
+    HttpResult streamingRecommend(Integer uid);
 }

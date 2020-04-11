@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OfflineRecommend {
+public class Recommend {
 
     private Integer uid;
 

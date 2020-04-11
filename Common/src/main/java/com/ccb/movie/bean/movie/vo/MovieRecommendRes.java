@@ -9,9 +9,14 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieRecommendRes {
+public class MovieRecommendRes implements Comparable<MovieRecommendRes> {
 
     private Integer mid;
 
     private Double score;
+
+    @Override
+    public int compareTo(MovieRecommendRes o) {
+        return o.score.compareTo(this.score);
+    }
 }
