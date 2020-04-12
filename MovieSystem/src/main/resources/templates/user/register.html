@@ -36,31 +36,32 @@
             $("#submitBtn").click(function () {
                 var username = $("#form-username").val();
                 var password = $("#form-password").val();
+                var email = $("#form-email").val();
+                var phone = $("#form-phone").val();
                 $.ajax({
                     type: "POST",
                     contentType: "application/json;charset=utf-8",
-                    url: "http://web.movie.com/user/login",
                     xhrFields: {
                         withCredentials: true
                     },
+                    url: "http://web.movie.com/user/register",
                     data: JSON.stringify({
                         "username": username,
-                        "password": password
+                        "password": password,
+                        "email": email,
+                        "phone": phone
                     }),
                     success: function (data) {
                         if (data.code == 0) {
-                            window.location.href = "http://www.movie.com/index.html";
+                            window.location.href = "http://www.movie.com/login.html";
                         } else {
                             alert(data.msg);
                         }
                     },
                     error: function (data) {
-                        alert("网络请求失败，原因为" + data.responseText);
+                        alert("网络请求失败，原因为" + data.msg);
                     }
                 });
-            });
-            $("#registerBtn").click(function () {
-                window.location.href = "http://www.movie.com/register.html"
             })
         });
     </script>
@@ -107,8 +108,17 @@
                             <input type="password" name="form-password" placeholder="Password..."
                                    class="form-password form-control" id="form-password">
                         </div>
-                        <button id="submitBtn">登陆</button>
-                        <button id="registerBtn">注册</button>
+                        <div class="form-group">
+                            <label class="sr-only" for="form-phone">Password</label>
+                            <input type="text" name="form-phone" placeholder="Phone..."
+                                   class="form-password form-control" id="form-phone">
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="form-email">Password</label>
+                            <input type="text" name="form-email" placeholder="Email..."
+                                   class="form-password form-control" id="form-email">
+                        </div>
+                        <button id="submitBtn">注册</button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap Login Form Template</title>
+
+<script type="text/javascript" src="/static/script/api.js"></script>
+<script type="text/javascript" src="/static/script/jquery.min.js"></script>
+<script type="text/javascript" src="/static/script/bootstrap.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        $("#logout").click(function () {
+            $.ajax({
+                type: "PUT",
+                contentType: "application/json;charset=utf-8",
+                xhrFields: {
+                    withCredentials: true
+                },
+                url: "http://web.movie.com/user/logout",
+                data: JSON.stringify({
+                    "username": username,
+                    "password": password,
+                    "origin": origin,
+                    "confirm": confirm
+                }),
+                success: function (data) {
+                    if (data.code == 0) {
+                        window.location.href = "http://www.movie.com/login.html";
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (data) {
+                    alert("网络请求失败，原因为" + data.msg);
+                }
+            });
+        })
+    })
+</script>
+</html>
+<body>
+<button id="logout">提交</button>
+</body>

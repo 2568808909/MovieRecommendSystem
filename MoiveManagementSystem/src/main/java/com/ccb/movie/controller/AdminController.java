@@ -55,6 +55,6 @@ public class AdminController {
 
     @GetMapping("/login")
     public ModelAndView loginPage() {
-        return new ModelAndView("/admin/login");
+        return new ModelAndView("www.movie.com/index.html");
     }
 }

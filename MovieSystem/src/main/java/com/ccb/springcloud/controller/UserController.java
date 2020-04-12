@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -32,6 +33,7 @@ public class UserController {
         return userService.register(param);
     }
 
+    @CrossOrigin(origins = "http://www.movie.com")
     @PostMapping("/login")
     public HttpResult login(@Validated @RequestBody UserLoginParam param,
                             HttpServletResponse response) {
@@ -46,6 +48,7 @@ public class UserController {
             Cookie cookie = new Cookie(TICKET, (String) data.get("token"));
             cookie.setMaxAge(86400);  //要设置cookie有效时间才可生效
             cookie.setPath("/");
+            cookie.setDomain("movie.com");
             response.addCookie(cookie);
         }
     }
