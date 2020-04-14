@@ -47,8 +47,8 @@
                     url: "http://web.movie.com/user/pwd",
                     data: JSON.stringify({
                         "username": username,
-                        "password": password,
-                        "origin": origin,
+                        "newPassword": password,
+                        "originPassword": origin,
                         "confirm": confirm
                     }),
                     success: function (data) {
@@ -110,12 +110,12 @@
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="form-password">Password</label>
-                            <input type="text" name="form-password" placeholder="New Password..."
+                            <input type="password" name="form-password" placeholder="New Password..."
                                    class="form-password form-control" id="form-password">
                         </div>
                         <div class="form-group">
                             <label class="sr-only" for="form-confirm">Password</label>
-                            <input type="text" name="form-confirm" placeholder="Confirm..."
+                            <input type="password" name="form-confirm" placeholder="Confirm..."
                                    class="form-password form-control" id="form-confirm">
                         </div>
                         <button id="submitBtn">提交</button>
