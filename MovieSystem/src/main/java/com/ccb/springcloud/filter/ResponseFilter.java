@@ -17,10 +17,10 @@ public class ResponseFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setHeader("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie, Set-Cookie");
-        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization, Cookie, Set-Cookie,X-Auth-Token");
+        res.setHeader("Access-Control-Allow-Methods", "PUT,GET,POST,DELETE,OPTIONS");
         res.setHeader("Access-Control-Allow-Origin", "http://www.movie.com");
-        res.setHeader("Allow", "POST, GET, OPTIONS, DELETE, PUT");
+        res.setHeader("Allow", "PUT,GET,POST,DELETE,OPTIONS");
         filterChain.doFilter(servletRequest,res);
     }
 }

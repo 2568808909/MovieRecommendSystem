@@ -25,9 +25,6 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private Producer<String, String> producer;
-
     @PostMapping("/mark")
     public HttpResult mark(@Validated @RequestBody RatingParam param) {
         Rating rating = new Rating();
@@ -35,13 +32,6 @@ public class MovieController {
         rating.setMovieId(param.getMovieId());
         rating.setRating(param.getRating());
         movieService.mark(rating);
-        String msg = "mid:" +
-                param.getMovieId() +
-                "|uid:" +
-                param.getUserId() +
-                "|rating:" +
-                param.getRating();
-        producer.send(new ProducerRecord<>("movie-mark", msg));
         return HttpResult.success();
     }
 

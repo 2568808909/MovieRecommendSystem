@@ -28,6 +28,7 @@ public class UserController {
 
     public final static String TICKET = "ticket";
 
+    @CrossOrigin(origins = "http://www.movie.com")
     @PostMapping("/register")
     public HttpResult register(@Validated @RequestBody UserRegisterParam param) {
         return userService.register(param);
@@ -61,6 +62,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @CrossOrigin(origins = "http://www.movie.com")
     @PutMapping("/psw")
     public HttpResult changePassword(@Validated @RequestBody UserChangePasswordParam param) {
         return userService.changePassword(param);
