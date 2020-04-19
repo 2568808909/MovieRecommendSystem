@@ -1,6 +1,7 @@
 package com.ccb.movie.controller;
 
 import com.ccb.movie.annation.AdminOps;
+import com.ccb.movie.bean.common.HttpPageResult;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.movie.Movie;
 import com.ccb.movie.bean.movie.Rating;
@@ -36,7 +37,7 @@ public class MovieController {
     }
 
     @GetMapping("/page")
-    public HttpResult moviePage(@Validated @RequestBody MovieSearchParam param) {
+    public HttpPageResult moviePage(@Validated @RequestBody MovieSearchParam param) {
         Movie movie = new Movie();
         movie.setName(param.getName());
         movie.setCoverUrl(param.getCoverUrl());

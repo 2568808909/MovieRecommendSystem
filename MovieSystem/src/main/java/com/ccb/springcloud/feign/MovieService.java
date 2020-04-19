@@ -1,5 +1,6 @@
 package com.ccb.springcloud.feign;
 
+import com.ccb.movie.bean.common.HttpPageResult;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
@@ -16,7 +17,7 @@ public interface MovieService {
     HttpResult mark(RatingParam param);
 
     @GetMapping("/movie/page")
-    HttpResult moviePage(MovieSearchParam param);
+    HttpPageResult moviePage(MovieSearchParam param);
 
     @GetMapping("/movie/offline/recommend/{uid}")
     HttpResult offlineRecommend(@PathVariable("uid") Integer uid);

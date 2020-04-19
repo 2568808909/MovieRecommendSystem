@@ -1,5 +1,14 @@
 package com.ccb.movie.bean.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class HttpPageResult extends HttpResult {
 
     private PageInfo pageInfo;

@@ -1,5 +1,6 @@
 package com.ccb.springcloud.service;
 
+import com.ccb.movie.bean.common.HttpPageResult;
 import com.ccb.movie.bean.common.HttpResult;
 import com.ccb.movie.bean.movie.vo.MovieSearchParam;
 import com.ccb.movie.bean.movie.vo.RatingParam;
@@ -13,5 +14,5 @@ public interface MovieWebService {
 
     HttpResult mark(RatingParam param);
 
-    HttpResult moviePage(MovieSearchParam param);
+    HttpPageResult moviePage(MovieSearchParam param);
 }

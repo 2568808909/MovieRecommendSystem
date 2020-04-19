@@ -79,7 +79,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public HttpResult moviePage(Movie movie, Integer pageNum, Integer pageSize) {
+    public HttpPageResult moviePage(Movie movie, Integer pageNum, Integer pageSize) {
         long count = movieMapper.count(movie);
         Integer pageStart = (pageNum - 1) * pageSize;
         List<Movie> movies = movieMapper.moviePage(movie, pageStart, pageSize);
