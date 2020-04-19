@@ -18,6 +18,7 @@ public class MovieController {
     @Autowired
     private MovieWebService movieWebService;
 
+    @CrossOrigin("www.movie.com")
     @PostMapping("/mark")
     @UserOps
     public HttpResult mark(@RequestBody @Validated RatingParam param) {

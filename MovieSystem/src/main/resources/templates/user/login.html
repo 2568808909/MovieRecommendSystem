@@ -17,6 +17,7 @@
     <script type="text/javascript" src="/static/script/api.js"></script>
     <script type="text/javascript" src="/static/script/jquery.min.js"></script>
     <script type="text/javascript" src="/static/script/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/script/cookie.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,6 +50,7 @@
                     }),
                     success: function (data) {
                         if (data.code == 0) {
+                            cookie.set("uid", data.data.user.id, 1);
                             window.location.href = "http://www.movie.com/index.html";
                         } else {
                             alert(data.msg);
@@ -63,7 +65,7 @@
                 window.location.href = "http://www.movie.com/register.html"
             });
             $("#changePassword").click(function () {
-                window.location.href="http://www.movie.com/forget.html"
+                window.location.href = "http://www.movie.com/forget.html"
             })
         });
     </script>

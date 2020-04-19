@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="OrcasThemes">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
     <title>Home</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -23,56 +23,111 @@
     <script type="text/javascript" src="/static/script/api.js"></script>
     <script type="text/javascript" src="/static/script/jquery.min.js"></script>
     <script type="text/javascript" src="/static/script/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/script/cookie.js"></script>
     <script>
-        $(function(){
-            String.prototype.format = function() {
-                if(arguments.length == 0) return this;
+        var movieModel = '<article class="col-lg-3 col-md-6 col-sm-4" mid="{2}">\n' +
+            '                                <!-- POST L size -->\n' +
+            '                                <div class="post post-medium">\n' +
+            '                                    <div class="thumbr">\n' +
+            '                                        <a class="post-thumb" href="" data-lity>\n' +
+            '                                            <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>\n' +
+            '                                            <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>\n' +
+            '                                            <img class="img-responsive" src="{1}" alt="#">\n' +
+            '                                        </a>\n' +
+            '                                    </div>\n' +
+            '                                    <div class="infor">\n' +
+            '                                        <h4>\n' +
+            '                                            <a class="title" href="#">{0}</a>\n' +
+            '                                        </h4>\n' +
+            '                                        <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>\n' +
+            '                                        <div class="ratings">\n' +
+            '                                            <i class="fa fa-star rating-star" seq="1" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star rating-star" seq="2" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star-half-o rating-star" seq="3" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star-o rating-star" seq="4"></i>\n' +
+            '                                            <i class="fa fa-star-half rating-star" seq="5"></i>\n' +
+            '                                        </div>\n' +
+            '                                    </div>\n' +
+            '                                </div>\n' +
+            '                            </article>';
+        $(function () {
+            String.prototype.format = function () {
+                if (arguments.length == 0) return this;
                 var param = arguments[0];
                 var s = this;
-                if(typeof(param) == 'object') {
-                    for(var key in param)
+                if (typeof (param) == 'object') {
+                    for (var key in param)
                         s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
                     return s;
                 } else {
-                    for(var i = 0; i < arguments.length; i++)
+                    for (var i = 0; i < arguments.length; i++)
                         s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
                     return s;
                 }
             };
-            var movie='<article class="col-lg-3 col-md-6 col-sm-4">\n' +
-                '                                <!-- POST L size -->\n' +
-                '                                <div class="post post-medium">\n' +
-                '                                    <div class="thumbr">\n' +
-                '                                        <a class="post-thumb" href="" data-lity>\n' +
-                '                                            <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>\n' +
-                '                                            <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>\n' +
-                '                                            <img class="img-responsive" src="{1}" alt="#">\n' +
-                '                                        </a>\n' +
-                '                                    </div>\n' +
-                '                                    <div class="infor">\n' +
-                '                                        <h4>\n' +
-                '                                            <a class="title" href="#">{0}</a>\n' +
-                '                                        </h4>\n' +
-                '                                        <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>\n' +
-                '                                        <div class="ratings">\n' +
-                '                                            <i class="fa fa-star" aria-hidden="true"></i>\n' +
-                '                                            <i class="fa fa-star" aria-hidden="true"></i>\n' +
-                '                                            <i class="fa fa-star-half-o" aria-hidden="true"></i>\n' +
-                '                                            <i class="fa fa-star-o"></i>\n' +
-                '                                            <i class="fa fa-star-half"></i>\n' +
-                '                                        </div>\n' +
-                '                                    </div>\n' +
-                '                                </div>\n' +
-                '                            </article>';
+            page(1, 8);
+            $("#next-page").click(function () {
+                var pageNum = getCurrentPage() + 1;
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+            $("#last-page").click(function () {
+                var pageNum = getCurrentPage() - 1;
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+            $("#jump-page").click(function () {
+                var pageNum = getCurrentPage();
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+        });
+
+        function getCurrentPage() {
+            var page = $("#current-page").val();
+            if (/^\d+$/.test(page)) return parseInt(page);
+            return 1;
+        }
+
+        function page(pageNum, pageSize) {
             $.ajax({
                 type: "GET",
-                url: "http://web.movie.com/movie/page?pageSize=8&pageNum=1",
+                url: "http://web.movie.com/movie/page?pageSize=" + pageSize + "&pageNum=" + pageNum,
                 xhrFields: {
                     withCredentials: true
                 },
                 success: function (data) {
                     if (data.code == 0) {
-                        appendMovieElement(data,movie);
+                        appendMovieElement(data);
+                        $(".rating-star").on('click',function () {
+                            var rating = $(this).attr("seq");
+                            var movieId = $($(this).parents(".col-lg-3")[0]).attr('mid');
+                            var userId=cookie.get("uid");
+                            console.log(movieId);
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json;charset=utf-8",
+                                url: "http://web.movie.com/movie/mark",
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                data: JSON.stringify({
+                                    "userId": userId,
+                                    "movieId": movieId,
+                                    "rating":rating
+                                }),
+                                success: function (data) {
+                                    if (data.code == 0) {
+
+                                    } else {
+                                        alert(data.msg);
+                                    }
+                                },
+                                error: function (data) {
+                                    alert("网络请求失败，原因为" + data.msg);
+                                }
+                            });
+                        });
                     } else {
                         alert(data.msg);
                     }
@@ -81,11 +136,14 @@
                     alert("网络请求失败，原因为" + data.msg);
                 }
             });
-        });
-        function appendMovieElement(data,model){
+        }
+
+        function appendMovieElement(data) {
+            var list = $("#movie-list");
+            list.empty();
             var movies = data.data;
-            for(var i=0;i<movies.length;i++){
-                $("#movie-list").append(model.format(movies[i].name,movies[i].coverUrl));
+            for (var i = 0; i < movies.length; i++) {
+                list.append(movieModel.format(movies[i].name, movies[i].coverUrl,movies[i].id));
             }
         }
     </script>
@@ -96,14 +154,18 @@
     <!-- HEADER -->
     <div class="row header-top">
         <div class="col-lg-3 col-md-6 col-sm-5 col-xs-8">
-            <a class="main-logo" href="#"><img src="img/main-logo.png" class="main-logo img-responsive" alt="Muvee Reviews" title="Muvee Reviews"></a>
+            <a class="main-logo" href="#"><img src="img/main-logo.png" class="main-logo img-responsive"
+                                               alt="Muvee Reviews" title="Muvee Reviews"></a>
         </div>
         <div class="col-lg-6 hidden-md text-center hidden-sm hidden-xs">
-            <img src="img/banners/banner-sm.jpg" class="img-responsive" alt="Muvee Reviews Video Magazine HTML5 Bootstrap">
+            <img src="img/banners/banner-sm.jpg" class="img-responsive"
+                 alt="Muvee Reviews Video Magazine HTML5 Bootstrap">
         </div>
         <div class="col-lg-3 col-md-6 col-sm-7 hidden-xs">
             <div class="right-box">
-                <button type="button" class="access-btn" data-toggle="modal" data-target="#enquirypopup">get free access</button>
+                <button type="button" class="access-btn" data-toggle="modal" data-target="#enquirypopup">get free
+                    access
+                </button>
             </div>
         </div>
     </div>
@@ -112,7 +174,8 @@
         <div class="col-md-12">
             <nav class="navbar navbar-default">
                 <div class="navbar-header">
-                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse"
+                            data-target=".js-navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -187,10 +250,10 @@
                     <div class="col-lg-9 col-md-12 col-sm-12">
                         <div class="row auto-clear" id="movie-list">
                         </div>
-                        <input type="button"  id="last-page" style="width:100px;height:40px;margin:2px" value="上一页"/>
-                        <input type="button"  id="next-page" style="width:100px;height:40px;margin:2px" value="上一页"/>
-                        <input type="text"  id="next-page" style="width:60px;height:40px;margin:2px"/>
-                        <input type="button"  id="next-page" style="width:100px;height:40px;margin:2px" value="跳转到"/>
+                        <input type="button" id="last-page" style="width:100px;height:40px;margin:2px" value="上一页"/>
+                        <input type="button" id="next-page" style="width:100px;height:40px;margin:2px" value="下一页"/>
+                        <input type="text" id="current-page" value="1" style="width:60px;height:40px;margin:2px"/>
+                        <input type="button" id="jump-page" style="width:100px;height:40px;margin:2px" value="跳转到"/>
                         <div class="clearfix spacer"></div>
                     </div>
                     <!-- RIGHT ASIDE -->
@@ -201,14 +264,17 @@
                             <!-- SUBSCRIBE FIELD -->
                             <form name="search-submit" method="post" action="#" id="subscribe-submit">
                                 <fieldset class="search-fieldset">
-                                    <input id="subscribe" type="text" name="search" size="12" class="search-field" placeholder="Your email address" value="">
+                                    <input id="subscribe" type="text" name="search" size="12" class="search-field"
+                                           placeholder="Your email address" value="">
                                     <button class="subscribe-btn" type="submit" title="Subscribe">Subscribe</button>
                                 </fieldset>
                             </form>
                         </div>
                         <!-- SIDEBAR ADVERTISE BOX -->
                         <a href="" class="banner-l hidden-sm hidden-xs">
-                            <img src="img/banners/banner-l.jpg" class="img-responsive" alt="Buy Now Muvee Reviews Bootstrap HTML5 Template" title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
+                            <img src="img/banners/banner-l.jpg" class="img-responsive"
+                                 alt="Buy Now Muvee Reviews Bootstrap HTML5 Template"
+                                 title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
                         </a>
                     </div>
                 </div>
@@ -248,16 +314,19 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab.jpg" alt="#">
                                 </a>
                             </div>
                             <div class="infor">
                                 <h4>
-                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands Still.</a>
+                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands
+                                        Still.</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -271,7 +340,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab2.jpg" alt="#">
                                 </a>
@@ -280,7 +350,8 @@
                                 <h4>
                                     <a class="title" href="#">I’m not perfect but I am Loyal</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -294,7 +365,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab3.jpg" alt="#">
                                 </a>
@@ -303,7 +375,8 @@
                                 <h4>
                                     <a class="title" href="#">When I fell for you, I fell Hard</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -317,7 +390,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab4.jpg" alt="#">
                                 </a>
@@ -326,7 +400,8 @@
                                 <h4>
                                     <a class="title" href="#">If you are Mine, You are Mine. I don’t like Sharing</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -340,7 +415,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab5.jpg" alt="#">
                                 </a>
@@ -349,7 +425,8 @@
                                 <h4>
                                     <a class="title" href="#">I love you. That’s all I know</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -363,7 +440,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab6.jpg" alt="#">
                                 </a>
@@ -372,7 +450,8 @@
                                 <h4>
                                     <a class="title" href="#">It will be Always YOU</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -388,16 +467,19 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab.jpg" alt="#">
                                 </a>
                             </div>
                             <div class="infor">
                                 <h4>
-                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands Still.</a>
+                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands
+                                        Still.</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -411,7 +493,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab2.jpg" alt="#">
                                 </a>
@@ -420,7 +503,8 @@
                                 <h4>
                                     <a class="title" href="#">I’m not perfect but I am Loyal</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -434,7 +518,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab3.jpg" alt="#">
                                 </a>
@@ -443,7 +528,8 @@
                                 <h4>
                                     <a class="title" href="#">When I fell for you, I fell Hard</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -457,7 +543,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab4.jpg" alt="#">
                                 </a>
@@ -466,7 +553,8 @@
                                 <h4>
                                     <a class="title" href="#">If you are Mine, You are Mine. I don’t like Sharing</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -480,7 +568,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab5.jpg" alt="#">
                                 </a>
@@ -489,7 +578,8 @@
                                 <h4>
                                     <a class="title" href="#">I love you. That’s all I know</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -503,7 +593,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab6.jpg" alt="#">
                                 </a>
@@ -512,7 +603,8 @@
                                 <h4>
                                     <a class="title" href="#">It will be Always YOU</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -528,16 +620,19 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab.jpg" alt="#">
                                 </a>
                             </div>
                             <div class="infor">
                                 <h4>
-                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands Still.</a>
+                                    <a class="title" href="#">With You, I forget all my problems. With You, Time Stands
+                                        Still.</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -551,7 +646,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab2.jpg" alt="#">
                                 </a>
@@ -560,7 +656,8 @@
                                 <h4>
                                     <a class="title" href="#">I’m not perfect but I am Loyal</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -574,7 +671,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab3.jpg" alt="#">
                                 </a>
@@ -583,7 +681,8 @@
                                 <h4>
                                     <a class="title" href="#">When I fell for you, I fell Hard</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -597,7 +696,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab4.jpg" alt="#">
                                 </a>
@@ -606,7 +706,8 @@
                                 <h4>
                                     <a class="title" href="#">If you are Mine, You are Mine. I don’t like Sharing</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -620,7 +721,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab5.jpg" alt="#">
                                 </a>
@@ -629,7 +731,8 @@
                                 <h4>
                                     <a class="title" href="#">I love you. That’s all I know</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -643,7 +746,8 @@
                         <article class="col-lg-2 col-md-4 col-sm-4 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-tab6.jpg" alt="#">
                                 </a>
@@ -652,7 +756,8 @@
                                 <h4>
                                     <a class="title" href="#">It will be Always YOU</a>
                                 </h4>
-                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                      aria-hidden="true"></i>20.895</span>
                                 <div class="ratings">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -680,7 +785,8 @@
                         <div class="col-md-12 thumbr">
                             <div class="flag flag1"><i class="fa fa-star"></i></div>
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s.jpg" alt="#">
                             </a>
@@ -689,7 +795,8 @@
                             <h4>
                                 <a class="title" href="#">It always seems impossible until it’s done.</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -752,7 +859,9 @@
                 <div class="clearfix spacer"></div>
                 <!-- SIDEBAR ADVERTISE BOX -->
                 <a href="" class="banner-l">
-                    <img src="img/banners/banner-l.jpg" class="img-responsive" alt="Buy Now Muvee Reviews Bootstrap HTML5 Template" title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
+                    <img src="img/banners/banner-l.jpg" class="img-responsive"
+                         alt="Buy Now Muvee Reviews Bootstrap HTML5 Template"
+                         title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
                 </a>
             </aside>
         </div>
@@ -769,14 +878,17 @@
                             <div class="thumbr">
                                 <div class="flag flag1"><i class="fa fa-star"></i></div>
                                 <a class="post-thumb" href="" data-lity>
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <img class="img-responsive" src="img/thumbs/editors-large.jpg" alt="#">
                                 </a>
                                 <div class="infor">
                                     <h4>
-                                        <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist? Right?</a>
+                                        <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist?
+                                            Right?</a>
                                     </h4>
-                                    <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                    <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                          aria-hidden="true"></i>20.895</span>
                                     <div class="ratings">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -798,15 +910,18 @@
                                 <div class="thumbr">
                                     <div class="flag flag1"><i class="fa fa-star"></i></div>
                                     <a class="post-thumb" href="" data-lity>
-                                        <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                        <span class="play-btn-border" title="Play"><i
+                                                class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                         <img class="img-responsive" src="img/thumbs/thumb-s.jpg" alt="#">
                                     </a>
                                     <div class="infor">
                                         <h4>
-                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist? Right?</a>
+                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist?
+                                                Right?</a>
                                         </h4>
                                         <div class="vid-time-block home-small-posts">
-                                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                            <span class="posts-txt" title="Posts from Channel"><i
+                                                    class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
                                             <div class="ratings">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -823,15 +938,18 @@
                                 <div class="thumbr">
                                     <div class="flag flag1"><i class="fa fa-star"></i></div>
                                     <a class="post-thumb" href="" data-lity>
-                                        <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                        <span class="play-btn-border" title="Play"><i
+                                                class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                         <img class="img-responsive" src="img/thumbs/thumb-s2.jpg" alt="#">
                                     </a>
                                     <div class="infor">
                                         <h4>
-                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist? Right?</a>
+                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist?
+                                                Right?</a>
                                         </h4>
                                         <div class="vid-time-block home-small-posts">
-                                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                            <span class="posts-txt" title="Posts from Channel"><i
+                                                    class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
                                             <div class="ratings">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -848,15 +966,18 @@
                                 <div class="thumbr">
                                     <div class="flag flag1"><i class="fa fa-star"></i></div>
                                     <a class="post-thumb" href="" data-lity>
-                                        <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                        <span class="play-btn-border" title="Play"><i
+                                                class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                         <img class="img-responsive" src="img/thumbs/thumb-s3.jpg" alt="#">
                                     </a>
                                     <div class="infor">
                                         <h4>
-                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist? Right?</a>
+                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist?
+                                                Right?</a>
                                         </h4>
                                         <div class="vid-time-block home-small-posts">
-                                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                            <span class="posts-txt" title="Posts from Channel"><i
+                                                    class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
                                             <div class="ratings">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -873,15 +994,18 @@
                                 <div class="thumbr">
                                     <div class="flag flag1"><i class="fa fa-star"></i></div>
                                     <a class="post-thumb" href="" data-lity>
-                                        <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                        <span class="play-btn-border" title="Play"><i
+                                                class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                         <img class="img-responsive" src="img/thumbs/thumb-s4.jpg" alt="#">
                                     </a>
                                     <div class="infor">
                                         <h4>
-                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist? Right?</a>
+                                            <a class="title" href="#">Kiss me if I’m wrong but Dinosaurs still exist?
+                                                Right?</a>
                                         </h4>
                                         <div class="vid-time-block home-small-posts">
-                                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                                            <span class="posts-txt" title="Posts from Channel"><i
+                                                    class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
                                             <div class="ratings">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -901,7 +1025,9 @@
             <div class="clearfix"></div>
             <!-- MAIN ROLL ADVERTISE BOX -->
             <a href="" class="banner-md">
-                <img src="img/banners/banner-xl.jpg" class="img-responsive" alt="Buy Now Muvee Reviews Bootstrap HTML5 Template" title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
+                <img src="img/banners/banner-xl.jpg" class="img-responsive"
+                     alt="Buy Now Muvee Reviews Bootstrap HTML5 Template"
+                     title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
             </a>
             <!-- CURRENTLY VIEWING -->
             <section id="cur-view">
@@ -911,7 +1037,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s3.jpg" alt="#">
                             </a>
@@ -920,7 +1047,8 @@
                             <h4>
                                 <a class="title" href="#">You play Call of Duty? That’s cute</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -934,7 +1062,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s6.jpg" alt="#">
                             </a>
@@ -943,7 +1072,8 @@
                             <h4>
                                 <a class="title" href="#">Stay strong, the weekend is coming</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -957,7 +1087,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s4.jpg" alt="#">
                             </a>
@@ -966,7 +1097,8 @@
                             <h4>
                                 <a class="title" href="#">Be who and what you want, period</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -980,7 +1112,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s2.jpg" alt="#">
                             </a>
@@ -989,7 +1122,8 @@
                             <h4>
                                 <a class="title" href="#">Don’t let anyone tell you that you’re not strong enough</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -1003,7 +1137,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s5.jpg" alt="#">
                             </a>
@@ -1012,7 +1147,8 @@
                             <h4>
                                 <a class="title" href="#">Weekend, please don’t leave me</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -1026,7 +1162,8 @@
                     <article class="col-lg-2 col-md-4 col-sm-6 post post-medium">
                         <div class="thumbr">
                             <a class="post-thumb" href="" data-lity>
-                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round"
+                                                                              aria-hidden="true"></i></span>
                                 <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                 <img class="img-responsive" src="img/thumbs/thumb-s.jpg" alt="#">
                             </a>
@@ -1035,7 +1172,8 @@
                             <h4>
                                 <a class="title" href="#">You think this is a game?</a>
                             </h4>
-                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>
+                            <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up"
+                                                                                  aria-hidden="true"></i>20.895</span>
                             <div class="ratings">
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -1053,8 +1191,10 @@
                 <div id="myCarousel2" class="carousel slide" data-ride="carousel">
                     <h2 class="icon"><i class="fa fa-star" aria-hidden="true"></i>top reviews</h2>
                     <div class="carousel-control-box">
-                        <a class="left carousel-control" href="#myCarousel2"  role="button" data-slide="prev"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                        <a class="right carousel-control" href="#myCarousel2"  role="button" data-slide="next"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev"><i
+                                class="fa fa-chevron-left" aria-hidden="true"></i></a>
+                        <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next"><i
+                                class="fa fa-chevron-right" aria-hidden="true"></i></a>
                     </div>
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
@@ -1065,7 +1205,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1086,7 +1227,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review2.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review2.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1107,7 +1249,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review3.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review3.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1128,7 +1271,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review4.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review4.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1149,7 +1293,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review5.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review5.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1170,7 +1315,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review6.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review6.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1195,7 +1341,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1216,7 +1363,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review2.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review2.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1237,7 +1385,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review3.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review3.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1258,7 +1407,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review4.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review4.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1279,7 +1429,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review5.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review5.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1300,7 +1451,8 @@
                                     <div class="post post-medium">
                                         <a class="thumbr post-thumb" href="#">
                                             <span class="review-number">4.5</span>
-                                            <img src="img/thumbs/thumb-review6.jpg" class="review img-responsive" alt="Client">
+                                            <img src="img/thumbs/thumb-review6.jpg" class="review img-responsive"
+                                                 alt="Client">
                                         </a>
                                         <div class="infor">
                                             <h4>
@@ -1334,8 +1486,10 @@
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <h2 class="icon"><i class="fa fa-television" aria-hidden="true"></i>channels</h2>
                     <div class="carousel-control-box">
-                        <a class="left carousel-control" href="#myCarousel"  role="button" data-slide="prev"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
-                        <a class="right carousel-control" href="#myCarousel"  role="button" data-slide="next"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><i
+                                class="fa fa-chevron-left" aria-hidden="true"></i></a>
+                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><i
+                                class="fa fa-chevron-right" aria-hidden="true"></i></a>
                     </div>
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
@@ -1352,7 +1506,8 @@
                                             <h4>
                                                 <a class="title" href="#">Fancy Channel Name</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1367,7 +1522,8 @@
                                             <h4>
                                                 <a class="title" href="#">Premium MakeUp Beauty Channel</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1382,7 +1538,8 @@
                                             <h4>
                                                 <a class="title" href="#">Private Golden CH</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1397,7 +1554,8 @@
                                             <h4>
                                                 <a class="title" href="#">4K Quality Videos</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1412,7 +1570,8 @@
                                             <h4>
                                                 <a class="title" href="#">Japan Couture Video</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1427,7 +1586,8 @@
                                             <h4>
                                                 <a class="title" href="#">Burlesque French Movies</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1446,7 +1606,8 @@
                                             <h4>
                                                 <a class="title" href="#">Fancy Channel Name</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1461,7 +1622,8 @@
                                             <h4>
                                                 <a class="title" href="#">Premium MakeUp Beauty Channel</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1476,7 +1638,8 @@
                                             <h4>
                                                 <a class="title" href="#">Private Golden CH</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1491,7 +1654,8 @@
                                             <h4>
                                                 <a class="title" href="#">4K Quality Videos</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1506,7 +1670,8 @@
                                             <h4>
                                                 <a class="title" href="#">Japan Couture Video</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1521,7 +1686,8 @@
                                             <h4>
                                                 <a class="title" href="#">Burlesque French Movies</a>
                                             </h4>
-                                            <span class="posts-channel" title="Posts from Channel"><i class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
+                                            <span class="posts-channel" title="Posts from Channel"><i
+                                                    class="fa fa-video-camera" aria-hidden="true"></i>4000</span>
                                         </div>
                                     </div>
                                 </article>
@@ -1538,7 +1704,8 @@
 <div id="bottom-banner" class="container text-center">
     <!-- BOTTOM ADVERTISE BOX -->
     <a href="" class="banner-xl">
-        <img src="img/banners/banner-xl.jpg" class="img-responsive" alt="Buy Now Muvee Reviews Bootstrap HTML5 Template" title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
+        <img src="img/banners/banner-xl.jpg" class="img-responsive" alt="Buy Now Muvee Reviews Bootstrap HTML5 Template"
+             title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
     </a>
 </div>
 <!-- FOOTER -->
@@ -1555,14 +1722,18 @@
                         <div class="col-md-12">
                             <ul class="social">
                                 <li class="social-facebook"><a href="#" class="fa fa-facebook social-icons"></a></li>
-                                <li class="social-google-plus"><a href="#" class="fa fa-google-plus social-icons"></a></li>
+                                <li class="social-google-plus"><a href="#" class="fa fa-google-plus social-icons"></a>
+                                </li>
                                 <li class="social-twitter"><a href="#" class="fa fa-twitter social-icons"></a></li>
                                 <li class="social-youtube"><a href="#" class="fa fa-youtube social-icons"></a></li>
                                 <li class="social-rss"><a href="#" class="fa fa-rss social-icons"></a></li>
                             </ul>
                         </div>
                         <div class="col-md-12">
-                            <p>Aliquam feugiat turpis quis felis adipiscing, non pulvinar odio lacinia. Aliquam elementum pharetra fringilla. Duis blandit, sapien in semper vehicula, tellus elit gravida odio, ac tincidunt nisl mi at ante. Vivamus tincidunt nunc nibh. Duis blandit, sapien in semper vehicula</p>
+                            <p>Aliquam feugiat turpis quis felis adipiscing, non pulvinar odio lacinia. Aliquam
+                                elementum pharetra fringilla. Duis blandit, sapien in semper vehicula, tellus elit
+                                gravida odio, ac tincidunt nisl mi at ante. Vivamus tincidunt nunc nibh. Duis blandit,
+                                sapien in semper vehicula</p>
                         </div>
                     </div>
                 </div>
@@ -1588,7 +1759,8 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity title="Video Title Goes Here">
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-s.jpg" alt="#">
                                 </a>
@@ -1597,7 +1769,8 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity title="Video Title Goes Here">
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-s2.jpg" alt="#">
                                 </a>
@@ -1606,7 +1779,8 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity title="Video Title Goes Here">
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-s4.jpg" alt="#">
                                 </a>
@@ -1615,7 +1789,8 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 post post-medium">
                             <div class="thumbr">
                                 <a class="post-thumb" href="" data-lity title="Video Title Goes Here">
-                                    <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
+                                    <span class="play-btn-border" title="Play"><i
+                                            class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>
                                     <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>
                                     <img class="img-responsive" src="img/thumbs/thumb-s3.jpg" alt="#">
                                 </a>
@@ -1638,9 +1813,12 @@
             <div class="row copyright-bottom text-center">
                 <div class="col-md-12 text-center">
                     <a href="" class="footer-logo" title="Video Magazine Bootstrap HTML5 template">
-                        <img src="img/footer-logo.png" class="img-responsive text-center" alt="Video Magazine Bootstrap HTML5 template">
+                        <img src="img/footer-logo.png" class="img-responsive text-center"
+                             alt="Video Magazine Bootstrap HTML5 template">
                     </a>
-                    <p>Copyright &copy; 2017.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+                    <p>Copyright &copy; 2017.Company name All rights reserved.<a target="_blank"
+                                                                                 href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                    </p>
                 </div>
             </div>
         </footer>
@@ -1652,7 +1830,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/lity.js"></script>
 <script>
-    $(".nav .dropdown").hover(function() {
+    $(".nav .dropdown").hover(function () {
         $(this).find(".dropdown-toggle").dropdown("toggle");
     });
 </script>
