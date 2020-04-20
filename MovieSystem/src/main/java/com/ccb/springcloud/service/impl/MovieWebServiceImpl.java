@@ -43,7 +43,9 @@ public class MovieWebServiceImpl implements MovieWebService {
 
     private HttpResult getMovieRecommendResult(HttpResult result) {
         if (result.getCode() == HttpResult.SUCCESS_CODE) {
-            LinkedHashMap map = ((LinkedHashMap) ((ArrayList) result.getData()).get(0));
+            ArrayList data = (ArrayList) result.getData();
+            if (data == null || data.size() == 0) return HttpResult.success(new ArrayList<>());
+            LinkedHashMap map = (LinkedHashMap) data.get(0);
             ArrayList<LinkedHashMap> recommend = (ArrayList) map.get("recommend");
             List<Integer> movieIds = new ArrayList<>();
             for (LinkedHashMap linkedHashMap : recommend) {

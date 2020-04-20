@@ -68,6 +68,7 @@ public class UserController {
         return userService.changePassword(param);
     }
 
+    @CrossOrigin(origins = "http://www.movie.com")
     @PutMapping("/logout")
     @UserOps
     public HttpResult logout(@RequestBody @Validated LogoutParam param,
@@ -80,6 +81,7 @@ public class UserController {
                     Cookie c = new Cookie(cookie.getName(), null);
                     c.setMaxAge(0);
                     c.setPath("/");
+                    cookie.setDomain("movie.com");
                     response.addCookie(c);
                     break;
                 }

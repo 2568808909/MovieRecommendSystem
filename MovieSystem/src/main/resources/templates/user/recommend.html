@@ -50,8 +50,12 @@
             '                                    </div>\n' +
             '                                </div>\n' +
             '                            </article>';
-        var uid=cookie.get("uid");
         $(function () {
+            var uid = cookie.get("uid");
+            if(uid==null){
+                alert("请先登录");
+                window.location.href = "http://www.movie.com/login.html";
+            }
             String.prototype.format = function () {
                 if (arguments.length == 0) return this;
                 var param = arguments[0];
@@ -66,121 +70,57 @@
                     return s;
                 }
             };
-            page(1, 8);
-            $("#next-page").click(function () {
-                var pageNum = getCurrentPage() + 1;
-                page(pageNum, 8);
-                $("#current-page").val(pageNum)
-            });
-            $("#last-page").click(function () {
-                var pageNum = getCurrentPage() - 1;
-                page(pageNum, 8);
-                $("#current-page").val(pageNum)
-            });
-            $("#jump-page").click(function () {
-                var pageNum = getCurrentPage();
-                page(pageNum, 8);
-                $("#current-page").val(pageNum)
-            });
             var movieList = $(".list");
             movieList.on('mouseover',function () {
-                $(this).css("color","yellow");
+               $(this).css("color","yellow");
             });
             movieList.on('mouseout',function () {
                 $(this).css("color","white");
             });
-            $("#recommend").click(function () {
-                window.location.href="http://www.movie.com/recommend.html";
+            $("#real-time-h").click(function () {
+               realTimeRecommend();
             });
-            var sign = $("#sign");
-            if(uid==null){
-                sign.html="login";
-                sign.click(function () {
-                    window.location.href = "http://www.movie.com/login.html";
-                });
-            }else{
-                sign.html="logout";
-                sign.click(function () {
-                    var token = cookie.get("ticket");
-                    var username = cookie.get("username");
-                    $.ajax({
-                        type: "PUT",
-                        contentType: "application/json;charset=utf-8",
-                        url: "http://web.movie.com/user/logout",
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        data: JSON.stringify({
-                            "token": token,
-                            "username": username
-                        }),
-                        success: function (data) {
-                            if (data.code == 0) {
-                                cookie.remove("uid");
-                                cookie.remove("username");
-                                alert("登出成功");
-                            } else {
-                                alert("请您先登录");
-                                window.location.href = "http://www.movie.com/login.html";
-                            }
-                        },
-                        error: function (data) {
-                            alert("网络请求失败，原因为" + data.msg);
-                        }
-                    });
-                });
-            }
+            $("#offline-h").click(function () {
+                offlineRecommend();
+            });
+            $("#movie").click(function () {
+                window.location.href="http://www.movie.com/index.html";
+            });
+            offlineRecommend();
         });
 
-        function getCurrentPage() {
-            var page = $("#current-page").val();
-            if (/^\d+$/.test(page)) return parseInt(page);
-            return 1;
-        }
-
-        function page(pageNum, pageSize) {
+        function realTimeRecommend(){
+            var uid=cookie.get("uid");
             $.ajax({
                 type: "GET",
-                url: "http://web.movie.com/movie/page?pageSize=" + pageSize + "&pageNum=" + pageNum,
+                url: "http://web.movie.com/movie/streaming/recommend/"+uid,
                 xhrFields: {
                     withCredentials: true
                 },
                 success: function (data) {
                     if (data.code == 0) {
                         appendMovieElement(data);
-                        $(".rating-star").on('click',function () {
-                            var rating = $(this).attr("seq");
-                            var movieId = $($(this).parents(".col-lg-3")[0]).attr('mid');
-                            var userId=cookie.get("uid");
-                            if(userId==null) {
-                                alert("请您先登录");
-                                window.location.href = "http://www.movie.com/login.html";
-                            }
-                            $.ajax({
-                                type: "POST",
-                                contentType: "application/json;charset=utf-8",
-                                url: "http://web.movie.com/movie/mark",
-                                xhrFields: {
-                                    withCredentials: true
-                                },
-                                data: JSON.stringify({
-                                    "userId": userId,
-                                    "movieId": movieId,
-                                    "rating":rating
-                                }),
-                                success: function (data) {
-                                    if (data.code == 0) {
-                                        alert("评分成功");
-                                    } else {
-                                        alert("请您先登录");
-                                        window.location.href = "http://www.movie.com/login.html";
-                                    }
-                                },
-                                error: function (data) {
-                                    alert("网络请求失败，原因为" + data.msg);
-                                }
-                            });
-                        });
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (data) {
+                    alert("网络请求失败，原因为" + data.msg);
+                }
+            });
+        }
+
+        function offlineRecommend(){
+            var uid=cookie.get("uid");
+            $.ajax({
+                type: "GET",
+                url: "http://web.movie.com/movie/offline/recommend/"+uid,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    if (data.code == 0) {
+                        appendMovieElement(data);
                     } else {
                         alert(data.msg);
                     }
@@ -216,7 +156,8 @@
         </div>
         <div class="col-lg-3 col-md-6 col-sm-7 hidden-xs">
             <div class="right-box">
-                <button type="button" id="sign" class="access-btn" data-target="#enquirypopup">login
+                <button type="button" class="access-btn" data-toggle="modal" data-target="#enquirypopup">get free
+                    access
                 </button>
             </div>
         </div>
@@ -298,16 +239,19 @@
             <section id="home-main">
                 <h2 class="icon list"  id="movie"><i class="fa fa-television" aria-hidden="true"></i>MOVIE-LIST</h2>
                 <h2>/</h2>
-                <h2 class="icon list" id="recommend">RECOMMEND FOR ME</h2>
+                <h2 class="icon list" id="offline-h">OFFLINE</h2>
+                <h2>/</h2>
+                <h2 class="icon list" id="real-time-h">REAL-TIME</h2>
                 <div class="row">
                     <!-- ARTICLES -->
                     <div class="col-lg-9 col-md-12 col-sm-12">
+                        <div class="row auto-clear" id="offline">
+                        </div>
+                        <div class="clearfix spacer"></div>
+                    </div>
+                    <div class="col-lg-9 col-md-12 col-sm-12">
                         <div class="row auto-clear" id="movie-list">
                         </div>
-                        <input type="button" id="last-page" style="width:100px;height:40px;margin:2px" value="上一页"/>
-                        <input type="button" id="next-page" style="width:100px;height:40px;margin:2px" value="下一页"/>
-                        <input type="text" id="current-page" value="1" style="width:60px;height:40px;margin:2px"/>
-                        <input type="button" id="jump-page" style="width:100px;height:40px;margin:2px" value="跳转到"/>
                         <div class="clearfix spacer"></div>
                     </div>
                     <!-- RIGHT ASIDE -->

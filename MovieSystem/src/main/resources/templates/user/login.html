@@ -51,6 +51,7 @@
                     success: function (data) {
                         if (data.code == 0) {
                             cookie.set("uid", data.data.user.id, 1);
+                            cookie.set("username", data.data.user.username, 1);
                             window.location.href = "http://www.movie.com/index.html";
                         } else {
                             alert(data.msg);

@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
                 .map(obj -> obj.get("username"))
                 .orElse(null);
         if (user == null || username.equals(user)) {
-            redisTemplate.delete(token);
+            redisTemplate.delete(token+"==");
             return HttpResult.success("登出成功");
         }
         return HttpResult.fail("请确认token或者username的正确性，token与用户名不匹配");
