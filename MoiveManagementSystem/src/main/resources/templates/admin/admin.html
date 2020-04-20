@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="OrcasThemes">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <title>Home</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="css/screen.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <!--[if IE 7]>
+
+    <![endif]-->
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link href="css/lity.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/script/api.js"></script>
+    <script type="text/javascript" src="/static/script/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/script/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/script/cookie.js"></script>
+    <script>
+        var movieModel = '<article class="col-lg-3 col-md-6 col-sm-4" mid="{2}">\n' +
+            '                                <!-- POST L size -->\n' +
+            '                                <div class="post post-medium">\n' +
+            '                                    <div class="thumbr">\n' +
+            '                                        <a class="post-thumb" href="" data-lity>\n' +
+            '                                            <span class="play-btn-border" title="Play"><i class="fa fa-play-circle headline-round" aria-hidden="true"></i></span>\n' +
+            '                                            <div class="cactus-note ct-time font-size-1"><span>02:02</span></div>\n' +
+            '                                            <img class="img-responsive" src="{1}" alt="#">\n' +
+            '                                        </a>\n' +
+            '                                    </div>\n' +
+            '                                    <div class="infor">\n' +
+            '                                        <h4>\n' +
+            '                                            <a class="title" href="#">{0}</a>\n' +
+            '                                        </h4>\n' +
+            '                                        <span class="posts-txt" title="Posts from Channel"><i class="fa fa-thumbs-up" aria-hidden="true"></i>20.895</span>\n' +
+            '                                        <div class="ratings">\n' +
+            '                                            <i class="fa fa-star rating-star" seq="1" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star rating-star" seq="2" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star-half-o rating-star" seq="3" aria-hidden="true"></i>\n' +
+            '                                            <i class="fa fa-star-o rating-star" seq="4"></i>\n' +
+            '                                            <i class="fa fa-star-half rating-star" seq="5"></i>\n' +
+            '                                        </div>\n' +
+            '                                    </div>\n' +
+            '                                </div>\n' +
+            '                            </article>';
+        var adminTicket=cookie.get("adminTicket");
+        $(function () {
+            String.prototype.format = function () {
+                if (arguments.length == 0) return this;
+                var param = arguments[0];
+                var s = this;
+                if (typeof (param) == 'object') {
+                    for (var key in param)
+                        s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+                    return s;
+                } else {
+                    for (var i = 0; i < arguments.length; i++)
+                        s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+                    return s;
+                }
+            };
+            page(1, 8);
+            $("#next-page").click(function () {
+                var pageNum = getCurrentPage() + 1;
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+            $("#last-page").click(function () {
+                var pageNum = getCurrentPage() - 1;
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+            $("#jump-page").click(function () {
+                var pageNum = getCurrentPage();
+                page(pageNum, 8);
+                $("#current-page").val(pageNum)
+            });
+            var sign = $("#sign");
+            if(adminTicket==null){
+                sign.html="login";
+                sign.click(function () {
+                    window.location.href = "http://www.movie.com/adminLogin.html";
+                });
+            }else{
+                sign.html="logout";
+                sign.click(function () {
+                    $.ajax({
+                        type: "PUT",
+                        contentType: "application/json;charset=utf-8",
+                        url: "http://admin.movie.com/admin/logout",
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        success: function (data) {
+                            if (data.code == 0) {
+                                alert("登出成功");
+                            } else {
+                                alert("请您先登录");
+                                window.location.href = "http://www.movie.com/adminLogin.html";
+                            }
+                        },
+                        error: function (data) {
+                            alert("网络请求失败，原因为" + data.msg);
+                        }
+                    });
+                });
+            }
+        });
+
+        function getCurrentPage() {
+            var page = $("#current-page").val();
+            if (/^\d+$/.test(page)) return parseInt(page);
+            return 1;
+        }
+
+        function page(pageNum, pageSize) {
+            $.ajax({
+                type: "GET",
+                url: "http://admin.movie.com/movie/list?pageSize=" + pageSize + "&pageNum=" + pageNum,
+                contentType: "application/json;charset=utf-8",
+                xhrFields: {
+                    withCredentials: true
+                },
+                data: JSON.stringify(),
+                success: function (data) {
+                    if (data.code == 0) {
+                        appendMovieElement(data);
+                    } else {
+                        alert(data.msg);
+                    }
+                },
+                error: function (data) {
+                    alert("网络请求失败，原因为" + data.msg);
+                }
+            });
+        }
+
+        function appendMovieElement(data) {
+            var list = $("#movie-list");
+            list.empty();
+            var movies = data.data;
+            for (var i = 0; i < movies.length; i++) {
+                list.append(movieModel.format(movies[i].name, movies[i].coverUrl,movies[i].id));
+            }
+        }
+    </script>
+</head>
+<body>
+<!-- HOME 1 -->
+<div id="home1" class="container-fluid standard-bg">
+    <!-- HEADER -->
+    <div class="row header-top">
+        <div class="col-lg-3 col-md-6 col-sm-5 col-xs-8">
+            <a class="main-logo" href="#"><img src="img/main-logo.png" class="main-logo img-responsive"
+                                               alt="Muvee Reviews" title="Muvee Reviews"></a>
+        </div>
+        <div class="col-lg-6 hidden-md text-center hidden-sm hidden-xs">
+            <img src="img/banners/banner-sm.jpg" class="img-responsive"
+                 alt="Muvee Reviews Video Magazine HTML5 Bootstrap">
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-7 hidden-xs">
+            <div class="right-box">
+                <button type="button" id="sign" class="access-btn" data-target="#enquirypopup">login
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- MENU -->
+    <div class="row home-mega-menu ">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse"
+                            data-target=".js-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse js-navbar-collapse megabg dropshd ">
+                    <ul class="nav navbar-nav">
+                        <li><a href="admin.html">Home</a></li>
+                        <li><a href="single-video.html">Video Post</a></li>
+                        <li><a href="single-page.html">Single Page - Basic</a></li>
+                        <li><a href="single-page-with-img.html">Single Page - with Image</a></li>
+                        <li><a href="adminLogin.html">Login</a></li>
+                        <li><a href="gallery-video-boxed.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                    <ul class="social">
+                        <li class="social-facebook"><a href="#" class="fa fa-facebook social-icons"></a></li>
+                        <li class="social-google-plus"><a href="#" class="fa fa-google-plus social-icons"></a></li>
+                        <li class="social-twitter"><a href="#" class="fa fa-twitter social-icons"></a></li>
+                        <li class="social-youtube"><a href="#" class="fa fa-youtube social-icons"></a></li>
+                        <li class="social-rss"><a href="#" class="fa fa-rss social-icons"></a></li>
+                    </ul>
+                    <div class="search-block">
+                        <form>
+                            <input type="search" placeholder="Search">
+                        </form>
+                    </div>
+                </div>
+                <!-- /.nav-collapse -->
+            </nav>
+        </div>
+    </div>
+    <!-- CORE -->
+    <div class="row">
+        <!-- SIDEBAR -->
+        <div class="col-lg-2 col-md-4 hidden-sm hidden-xs">
+            <aside class="dark-bg">
+                <article>
+                    <h2 class="icon"><i class="fa fa-flash" aria-hidden="true"></i>trending</h2>
+                    <ul class="sidebar-links">
+                        <li class="fa fa-chevron-right"><a href="#">featured videos</a><span>4.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">most viewed</a><span>2.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">editor's choice</a><span>650</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">all video</a><span>4.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">full hd</a><span>7.800</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">premium</a><span>200</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">movies</a><span>15</span></li>
+                    </ul>
+                </article>
+                <div class="clearfix spacer"></div>
+                <article>
+                    <h2 class="icon"><i class="fa fa-gears" aria-hidden="true"></i>categories</h2>
+                    <ul class="sidebar-links">
+                        <li class="fa fa-chevron-right"><a href="#">Lifestyle</a><span>4.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">World News</a><span>2.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">Funny videos</a><span>650</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">Hot Stories</a><span>4.000</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">Music Clips</a><span>7.800</span></li>
+                        <li class="fa fa-chevron-right"><a href="#">Premier Trailers</a><span>200</span></li>
+                    </ul>
+                </article>
+                <div class="clearfix spacer"></div>
+            </aside>
+        </div>
+        <!-- HOME MAIN POSTS -->
+        <div class="col-lg-10 col-md-8">
+            <section id="home-main">
+                <h2 class="icon list"  id="movie"><i class="fa fa-television" aria-hidden="true"></i>MOVIE-LIST</h2>
+                <div class="row">
+                    <!-- ARTICLES -->
+                    <div class="col-lg-9 col-md-12 col-sm-12">
+                        <div class="row auto-clear" id="movie-list">
+                        </div>
+                        <input type="button" id="last-page" style="width:100px;height:40px;margin:2px" value="上一页"/>
+                        <input type="button" id="next-page" style="width:100px;height:40px;margin:2px" value="下一页"/>
+                        <input type="text" id="current-page" value="1" style="width:60px;height:40px;margin:2px"/>
+                        <input type="button" id="jump-page" style="width:100px;height:40px;margin:2px" value="跳转到"/>
+                        <div class="clearfix spacer"></div>
+                    </div>
+                    <!-- RIGHT ASIDE -->
+                    <div class="col-lg-3 hidden-md col-sm-12 text-center top-sidebar">
+                        <!-- SUBSCRIBE BOX -->
+                        <div class="subscribe-box">
+                            <h2 class="icon"><i class="fa fa-plug" aria-hidden="true"></i>subscribe</h2>
+                            <!-- SUBSCRIBE FIELD -->
+                            <form name="search-submit" method="post" action="#" id="subscribe-submit">
+                                <fieldset class="search-fieldset">
+                                    <input id="subscribe" type="text" name="search" size="12" class="search-field"
+                                           placeholder="Your email address" value="">
+                                    <button class="subscribe-btn" type="submit" title="Subscribe">Subscribe</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <!-- SIDEBAR ADVERTISE BOX -->
+                        <a href="" class="banner-l hidden-sm hidden-xs">
+                            <img src="img/banners/banner-l.jpg" class="img-responsive"
+                                 alt="Buy Now Muvee Reviews Bootstrap HTML5 Template"
+                                 title="Buy Now Muvee Reviews Bootstrap HTML5 Template">
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+</html>

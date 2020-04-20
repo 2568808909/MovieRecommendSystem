@@ -1,10 +1,12 @@
 package com.ccb.movie.controller;
 
 import com.ccb.movie.bean.common.HttpResult;
+import com.ccb.movie.bean.user.vo.UserLoginParam;
 import com.ccb.movie.exception.BizException;
 import com.ccb.movie.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,8 +23,11 @@ public class AdminController {
 
     public final static String TICKET = "adminTicket";
 
+    @CrossOrigin("www.movie.com")
     @PostMapping("/login")
-    public HttpResult login(String admin, String password, HttpServletResponse response) {
+    public HttpResult login(@Validated @RequestBody UserLoginParam param, HttpServletResponse response) {
+        String admin = param.getUsername();
+        String password = param.getPassword();
         if (StringUtils.isEmpty(admin) || StringUtils.isEmpty(password)) {
             throw new BizException("请输入管理员账号和密码");
         }
@@ -31,11 +36,13 @@ public class AdminController {
             Cookie cookie = new Cookie(TICKET, (String) loginInfo.getData());
             cookie.setPath("/");
             cookie.setMaxAge(86400);
+            cookie.setDomain("movie.com");
             response.addCookie(cookie);
         }
         return loginInfo;
     }
 
+    @CrossOrigin("www.movie.com")
     @PutMapping("/logout")
     public HttpResult logout(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
@@ -45,6 +52,7 @@ public class AdminController {
                     Cookie c = new Cookie(cookie.getName(), null);
                     c.setMaxAge(0);
                     c.setPath("/");
+                    c.setDomain("movie.com");
                     response.addCookie(c);
                     return adminService.logout(cookie.getValue());
                 }
@@ -55,6 +63,6 @@ public class AdminController {
 
     @GetMapping("/login")
     public ModelAndView loginPage() {
-        return new ModelAndView("www.movie.com/index.html");
+        return new ModelAndView("/admin/login");
     }
 }
