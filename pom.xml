@@ -25,7 +25,7 @@
         <maven.complier.target>1.8</maven.complier.target>
         <junit.version>4.12</junit.version>
         <log4j.version>1.2.17</log4j.version>
-        <mysql.version>8.0.19</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <druid.version>1.1.16</druid.version>
         <lombok.version>1.16.18</lombok.version>
         <mybatis.spring.boot.version>1.3.0</mybatis.spring.boot.version>
